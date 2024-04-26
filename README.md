@@ -1,2 +1,2 @@
-# lebruce-classified
-Online service for product placement
+# lebruce-clothing-store
+Online clothing store
