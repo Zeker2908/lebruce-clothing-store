@@ -20,5 +20,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+
+    @PrePersist
+    protected void onCreate() {
+        orderDate = new Date();
+    }
 }
