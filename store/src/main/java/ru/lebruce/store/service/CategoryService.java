@@ -5,7 +5,7 @@ import ru.lebruce.store.model.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> findAllCategory();
+    List<Category> findAllCategories();
 
     Category findByCategoryName(String categoryName);
 

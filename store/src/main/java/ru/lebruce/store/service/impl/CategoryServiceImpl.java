@@ -12,10 +12,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
 
     @Override
-    public List<Category> findAllCategory() {
+    public List<Category> findAllCategories() {
         return repository.findAll();
     }
 

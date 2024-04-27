@@ -8,14 +8,14 @@ import ru.lebruce.store.service.CategoryService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/v1/categories")
 @AllArgsConstructor
 public class CategoryController {
-    private CategoryService service;
+    private final CategoryService service;
 
     @GetMapping
     public List<Category> findAllCategory() {
-        return service.findAllCategory();
+        return service.findAllCategories();
     }
 
     @GetMapping("/{categoryName}")

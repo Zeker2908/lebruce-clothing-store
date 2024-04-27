@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserController {
-    private UserService service;
+    private final UserService service;
 
     @GetMapping
     public List<User> findAllUser() {
