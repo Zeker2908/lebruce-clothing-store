@@ -18,7 +18,7 @@ public class UserController {
         return service.findAllUsers();
     }
 
-    @PostMapping("save_student")
+    @PostMapping("save_user")
     public User saveUser(@RequestBody User user) {
         return service.saveUser(user);
     }
@@ -28,12 +28,12 @@ public class UserController {
         return service.findByEmail(email);
     }
 
-    @PutMapping("update_student")
+    @PutMapping("update_user")
     public User updateUser(User user) {
         return service.updateUser(user);
     }
 
-    @DeleteMapping("delete_student/{email}")
+    @DeleteMapping("delete_user/{email}")
     public void deleteUser(@PathVariable String email) {
         service.deleteUser(email);
     }

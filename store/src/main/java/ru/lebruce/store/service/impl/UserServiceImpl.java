@@ -1,5 +1,6 @@
 package ru.lebruce.store.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.model.User;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String email) {
         repository.deleteByEmail(email);
     }
