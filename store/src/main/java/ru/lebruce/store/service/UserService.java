@@ -1,5 +1,6 @@
 package ru.lebruce.store.service;
 
+import jakarta.transaction.Transactional;
 import ru.lebruce.store.model.User;
 
 import java.util.List;
@@ -13,5 +14,8 @@ public interface UserService {
 
     User updateUser(User user);
 
+    void deleteUser(Long userId);
+
+    @Transactional
     void deleteUser(String email);
 }

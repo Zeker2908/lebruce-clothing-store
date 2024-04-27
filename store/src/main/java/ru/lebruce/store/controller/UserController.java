@@ -29,11 +29,16 @@ public class UserController {
     }
 
     @PutMapping("update_user")
-    public User updateUser(User user) {
+    public User updateUser(@RequestBody User user) {
         return service.updateUser(user);
     }
 
-    @DeleteMapping("delete_user/{email}")
+    @DeleteMapping("delete_user_by_id/{userId}")
+    public void deleteUser(@PathVariable Long userId) {
+        service.deleteUser(userId);
+    }
+
+    @DeleteMapping("delete_user_by_email/{email}")
     public void deleteUser(@PathVariable String email) {
         service.deleteUser(email);
     }
