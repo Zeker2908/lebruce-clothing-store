@@ -1,9 +1,7 @@
 package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.model.User;
 import ru.lebruce.store.service.UserService;
 
@@ -20,19 +18,23 @@ public class UserController {
         return service.findAllUsers();
     }
 
-    public User saveUser(User user) {
+    @PostMapping("save_student")
+    public User saveUser(@RequestBody User user) {
         return service.saveUser(user);
     }
 
-    public User findByEmail(String email) {
+    @GetMapping("/{email}")
+    public User findByEmail(@PathVariable String email) {
         return service.findByEmail(email);
     }
 
+    @PutMapping("update_student")
     public User updateUser(User user) {
         return service.updateUser(user);
     }
 
-    public void deleteUser(String email) {
+    @DeleteMapping("delete_student/{email}")
+    public void deleteUser(@PathVariable String email) {
         service.deleteUser(email);
     }
 }
