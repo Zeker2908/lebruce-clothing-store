@@ -5,7 +5,6 @@ import ru.lebruce.store.model.Order;
 import ru.lebruce.store.model.User;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Order findByOrderId(Long orderId);
 
     Order findByUser(User user);
 
