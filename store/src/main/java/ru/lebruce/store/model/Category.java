@@ -11,6 +11,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
+    @Column(unique = true)
     private String categoryName;
 
     @ManyToOne
