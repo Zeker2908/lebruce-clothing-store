@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     public Product findByProductName(String productName) {
         return repository.findByProductName(productName);
     }
-//sex//
+
     @Override
     public Product saveProduct(Product product) {
         return repository.save(product);
