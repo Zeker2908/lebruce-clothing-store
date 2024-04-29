@@ -1,9 +1,10 @@
-package ru.lebruce.store.model;
+package ru.lebruce.store.model.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.lebruce.store.model.User;
 
 import java.util.Collection;
 import java.util.List;

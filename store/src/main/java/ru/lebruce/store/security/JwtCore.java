@@ -5,7 +5,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
-import ru.lebruce.store.model.UserDetailsImpl;
+import ru.lebruce.store.model.impl.UserDetailsImpl;
 
 import java.util.Date;
 

@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.model.User;
-import ru.lebruce.store.model.UserDetailsImpl;
+import ru.lebruce.store.model.impl.UserDetailsImpl;
 import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.UserService;
 
