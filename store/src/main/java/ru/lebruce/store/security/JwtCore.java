@@ -25,4 +25,8 @@ public class JwtCore {
                 .compact();
 
     }
+
+    public String getNameFormJwt(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
 }

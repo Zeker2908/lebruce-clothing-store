@@ -20,4 +20,9 @@ public interface UserService extends UserDetailsService {
     void deleteUser(Long userId);
 
     void deleteUser(String email);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
 }
