@@ -7,6 +7,7 @@ import ru.lebruce.store.model.User;
 import ru.lebruce.store.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public User findByUsername(@PathVariable String username){
+    public Optional<User> findByUsername(@PathVariable String username){
         return service.findByUsername(username);
     }
 
