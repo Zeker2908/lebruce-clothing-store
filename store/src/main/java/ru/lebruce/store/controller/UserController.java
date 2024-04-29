@@ -30,6 +30,11 @@ public class UserController {
         return service.findByEmail(email);
     }
 
+    @GetMapping("/{username}")
+    public User findByUsername(@PathVariable String username){
+        return service.findByUsername(username);
+    }
+
     @PutMapping("update_user")
     public User updateUser(@RequestBody User user) {
         return service.updateUser(user);
