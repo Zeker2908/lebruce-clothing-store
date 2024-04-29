@@ -1,6 +1,7 @@
 package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.model.User;
 import ru.lebruce.store.service.UserService;
@@ -19,6 +20,7 @@ public class UserController {
     }
 
     @PostMapping("save_user")
+    @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody User user) {
         return service.saveUser(user);
     }
@@ -34,11 +36,13 @@ public class UserController {
     }
 
     @DeleteMapping("delete_user_by_id/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long userId) {
         service.deleteUser(userId);
     }
 
     @DeleteMapping("delete_user_by_email/{email}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String email) {
         service.deleteUser(email);
     }
