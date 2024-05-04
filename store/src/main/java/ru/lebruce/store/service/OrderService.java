@@ -1,7 +1,7 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.model.Order;
-import ru.lebruce.store.model.User;
+import ru.lebruce.store.domain.model.Order;
+import ru.lebruce.store.domain.model.User;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.model.Category;
-import ru.lebruce.store.model.Product;
+import ru.lebruce.store.domain.model.Product;
 
 import java.util.List;
 

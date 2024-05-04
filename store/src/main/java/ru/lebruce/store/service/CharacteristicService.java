@@ -1,6 +1,6 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.model.Characteristic;
+import ru.lebruce.store.domain.model.Characteristic;
 
 import java.util.List;
 

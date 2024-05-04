@@ -1,4 +1,4 @@
-package ru.lebruce.store.model;
+package ru.lebruce.store.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -3,7 +3,7 @@ package ru.lebruce.store.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.model.Address;
+import ru.lebruce.store.domain.model.Address;
 import ru.lebruce.store.repository.AddressRepository;
 import ru.lebruce.store.service.AddressService;
 

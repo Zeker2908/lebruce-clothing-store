@@ -3,7 +3,7 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.model.Address;
+import ru.lebruce.store.domain.model.Address;
 import ru.lebruce.store.service.AddressService;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.model.Category;
+import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.service.CategoryService;
 
 import java.util.List;

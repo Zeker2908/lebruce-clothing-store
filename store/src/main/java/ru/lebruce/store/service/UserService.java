@@ -1,6 +1,7 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.model.User;
 
 import java.util.List;
 
@@ -9,11 +10,21 @@ public interface UserService {
 
     User saveUser(User user);
 
+    User create(User user);
+
     User findByEmail(String email);
 
     User updateUser(User user);
+
+    User getByUsername(String username);
+
+    UserDetailsService userDetailsService();
     
     void deleteUser(Long userId);
 
     void deleteUser(String email);
+
+    User getCurrentUser();
+
+    void getAdmin();
 }

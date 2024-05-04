@@ -1,6 +1,6 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.model.Address;
+import ru.lebruce.store.domain.model.Address;
 
 import java.util.List;
 

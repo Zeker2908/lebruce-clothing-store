@@ -1,7 +1,9 @@
 package ru.lebruce.store.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.lebruce.store.model.User;
+import ru.lebruce.store.domain.model.User;
+
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     void deleteByUserId(Long userId);
@@ -9,4 +11,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void deleteByEmail(String email);
 
     User findByEmail(String email);
+
+    Optional<User> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

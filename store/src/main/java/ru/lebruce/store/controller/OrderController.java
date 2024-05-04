@@ -2,8 +2,8 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.model.Order;
-import ru.lebruce.store.model.User;
+import ru.lebruce.store.domain.model.Order;
+import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.OrderService;
 
 import java.util.List;

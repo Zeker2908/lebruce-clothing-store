@@ -2,7 +2,7 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.model.Characteristic;
+import ru.lebruce.store.domain.model.Characteristic;
 import ru.lebruce.store.service.CharacteristicService;
 
 import java.util.List;

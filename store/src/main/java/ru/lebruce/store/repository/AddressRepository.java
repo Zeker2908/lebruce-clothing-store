@@ -1,7 +1,7 @@
 package ru.lebruce.store.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.lebruce.store.model.Address;
+import ru.lebruce.store.domain.model.Address;
 
 public interface AddressRepository extends JpaRepository<Address,Long> {
     Address findByCity(String city);

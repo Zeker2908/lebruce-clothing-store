@@ -1,7 +1,7 @@
 package ru.lebruce.store.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.lebruce.store.model.Characteristic;
+import ru.lebruce.store.domain.model.Characteristic;
 
 public interface CharacteristicRepository extends JpaRepository<Characteristic, Long> {
 

@@ -1,7 +1,7 @@
 package ru.lebruce.store.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.lebruce.store.model.Category;
+import ru.lebruce.store.domain.model.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     void deleteByCategoryId(Long categoryId);

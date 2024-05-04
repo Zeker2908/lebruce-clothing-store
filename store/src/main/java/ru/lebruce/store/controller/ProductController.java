@@ -3,9 +3,7 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.model.Order;
-import ru.lebruce.store.model.Product;
-import ru.lebruce.store.model.User;
+import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.service.ProductService;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package ru.lebruce.store.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.model.Product;
+import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.service.ProductService;
 
