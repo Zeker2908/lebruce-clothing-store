@@ -7,6 +7,7 @@ import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,6 +29,11 @@ public class UserController {
     @GetMapping("/{email}")
     public User findByEmail(@PathVariable String email) {
         return service.findByEmail(email);
+    }
+
+    @GetMapping("/{username}")
+    public Optional<User> findByUsername(@PathVariable String username){
+        return service.findByUsername(username);
     }
 
     @PutMapping("update_user")
