@@ -1,26 +1,16 @@
 package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
-<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.lebruce.store.domain.model.User;
-=======
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import ru.lebruce.store.model.User;
-import ru.lebruce.store.model.impl.UserDetailsImpl;
->>>>>>> main
 import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.UserService;
 import ru.lebruce.store.domain.model.Role;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +34,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return repository.findByUsername(username);
-    }
-
-
-    @Override
     public User updateUser(User user) {
         return repository.save(user);
     }
@@ -66,7 +50,6 @@ public class UserServiceImpl implements UserService {
         repository.deleteByEmail(email);
     }
 
-<<<<<<< HEAD
     /**
      * Создание пользователя
      *
@@ -134,25 +117,5 @@ public class UserServiceImpl implements UserService {
         var user = getCurrentUser();
         user.setRole(Role.ROLE_ADMIN);
         saveUser(user);
-=======
-    @Override
-    public boolean existsByUsername(String username) {
-       return repository.existsByUsername(username);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException(
-                String.format("User '%s' not found",username)
-        ));
-
-        return UserDetailsImpl.build(user);
->>>>>>> main
     }
 }

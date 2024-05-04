@@ -1,16 +1,11 @@
 package ru.lebruce.store.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-<<<<<<< HEAD
 import ru.lebruce.store.domain.model.User;
-=======
-import ru.lebruce.store.model.User;
->>>>>>> main
 
 import java.util.List;
-import java.util.Optional;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     List<User> findAllUsers();
 
     User saveUser(User user);
@@ -18,8 +13,6 @@ public interface UserService extends UserDetailsService {
     User create(User user);
 
     User findByEmail(String email);
-
-    Optional<User> findByUsername(String username);
 
     User updateUser(User user);
 
@@ -31,14 +24,7 @@ public interface UserService extends UserDetailsService {
 
     void deleteUser(String email);
 
-<<<<<<< HEAD
     User getCurrentUser();
 
     void getAdmin();
-=======
-    boolean existsByUsername(String username);
-
-    boolean existsByEmail(String email);
-
->>>>>>> main
 }
