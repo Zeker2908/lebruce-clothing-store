@@ -19,8 +19,9 @@ public interface UserService {
     User getByUsername(String username);
 
     UserDetailsService userDetailsService();
-    
-    void deleteUser(Long userId);
+
+    void deleteUsername(String username);
+
 
     void deleteUser(String email);
 

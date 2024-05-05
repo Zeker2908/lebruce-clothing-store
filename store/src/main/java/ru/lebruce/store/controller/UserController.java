@@ -46,10 +46,10 @@ public class UserController {
         return service.updateUser(user);
     }
 
-    @DeleteMapping("delete_user_by_id/{userId}")
+    @DeleteMapping("delete_user_by_username/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long userId) {
-        service.deleteUser(userId);
+    public void deleteUsername(@PathVariable String username) {
+        service.deleteUsername(username);
     }
 
     @DeleteMapping("delete_user_by_email/{email}")
