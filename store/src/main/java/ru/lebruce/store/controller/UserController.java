@@ -2,6 +2,8 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.UserService;
@@ -19,15 +21,24 @@ public class UserController {
         return service.findAllUsers();
     }
 
-    @PostMapping("save_user")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User saveUser(@RequestBody User user) {
-        return service.saveUser(user);
+    @GetMapping("/get_by_email/{email}")
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
+        try {
+            var user = service.getByEmail(email);
+            return ResponseEntity.ok(user);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с почтой " + email + " не найден");
+        }
     }
 
-    @GetMapping("/{email}")
-    public User findByEmail(@PathVariable String email) {
-        return service.findByEmail(email);
+    @GetMapping("get_by_username/{username}")
+    public ResponseEntity<?> getByUsername(@PathVariable String username) {
+        try {
+            var user = service.getByUsername(username);
+            return ResponseEntity.ok(user);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с именем " + username + " не найден");
+        }
     }
 
     @PutMapping("update_user")

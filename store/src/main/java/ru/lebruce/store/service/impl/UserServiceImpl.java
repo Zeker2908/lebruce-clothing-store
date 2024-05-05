@@ -28,9 +28,15 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
+    /**
+     * Получение пользователя по почте
+     *<p>
+     * @return  пользователь
+     */
     @Override
-    public User findByEmail(String email) {
-        return repository.findByEmail(email);
+    public User getByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
     @Override
@@ -52,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Создание пользователя
-     *
+     *<p>
      * @return созданный пользователь
      */
     @Override
@@ -71,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Получение пользователя по имени пользователя
-     *
+     *<p>
      * @return пользователь
      */
     @Override
@@ -95,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Получение текущего пользователя
-     *
+     *<p>
      * @return текущий пользователь
      */
     @Override

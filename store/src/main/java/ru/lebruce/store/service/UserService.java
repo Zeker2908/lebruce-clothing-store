@@ -12,7 +12,7 @@ public interface UserService {
 
     User create(User user);
 
-    User findByEmail(String email);
+    User getByEmail(String email);
 
     User updateUser(User user);
 
