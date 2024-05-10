@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 
 @Data
@@ -22,13 +23,14 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Positive
+    @Column(nullable = false)
     private double price;
 
     private String description;
 
-    @PositiveOrZero
+    @Column(nullable = false)
     private int availableQuantity;
 
-    private String imageUrl;
+    @ElementCollection
+    private List<String> imageUrl;
 }

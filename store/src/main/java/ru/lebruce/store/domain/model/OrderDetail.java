@@ -22,12 +22,13 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @PositiveOrZero
+    @Column(nullable = false)
     private int quantity;
 
-    @Positive
+    @Column(nullable = false)
     private double unitPrice;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderDetailStatus status;
 }

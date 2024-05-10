@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,8 +25,14 @@ public class Review {
 
     @Min(0)
     @Max(5)
+    @Column(nullable = false)
     private double rating;
 
     private String comment;
-    private Date datePosted;
+    private LocalDateTime datePosted;
+
+    @PrePersist
+    protected void onCreate() {
+        datePosted = LocalDateTime.now();
+    }
 }

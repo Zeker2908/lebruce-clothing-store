@@ -15,6 +15,9 @@ public class Characteristic {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(nullable = false)
     private String characteristicName;
+
+    @Column(nullable = false)
     private String characteristicValue;
 }

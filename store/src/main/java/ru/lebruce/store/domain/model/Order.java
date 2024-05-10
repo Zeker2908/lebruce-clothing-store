@@ -3,6 +3,7 @@ package ru.lebruce.store.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -18,13 +19,14 @@ public class Order {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus status;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
+    @Column(nullable = false)
+    private LocalDateTime orderDate;
 
     @PrePersist
     protected void onCreate() {
-        orderDate = new Date();
+        orderDate = LocalDateTime.now();
     }
 }
