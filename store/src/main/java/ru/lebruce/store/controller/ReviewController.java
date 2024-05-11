@@ -2,13 +2,9 @@ package ru.lebruce.store.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.dto.CreateReviewDTO;
-import ru.lebruce.store.domain.exception.ProductNotFoundException;
-import ru.lebruce.store.domain.exception.ReviewAlreadyExists;
-import ru.lebruce.store.domain.exception.UserNotFoundException;
+import ru.lebruce.store.domain.dto.CreateReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.service.ReviewService;
 
@@ -26,7 +22,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createReview(@RequestBody @Valid CreateReviewDTO review) {
+    public ResponseEntity<?> createReview(@RequestBody @Valid CreateReviewRequest review) {
         return ResponseEntity.ok(service.createReview(review));
     }
 }

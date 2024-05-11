@@ -1,4 +1,4 @@
-package ru.lebruce.store.domain.exception;
+package ru.lebruce.store.exception;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String message) {

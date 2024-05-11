@@ -1,4 +1,4 @@
-package ru.lebruce.store.domain.exception;
+package ru.lebruce.store.exception;
 
 public class ReviewAlreadyExists extends RuntimeException {
     public ReviewAlreadyExists(String message) {

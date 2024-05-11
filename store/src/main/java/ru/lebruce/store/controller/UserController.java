@@ -1,16 +1,10 @@
 package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.exception.UserAlreadyExistsException;
-import ru.lebruce.store.domain.exception.UserNotFoundException;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.UserService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")

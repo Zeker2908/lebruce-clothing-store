@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.lebruce.store.domain.exception.*;
+import ru.lebruce.store.exception.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

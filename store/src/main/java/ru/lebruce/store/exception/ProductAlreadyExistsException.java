@@ -1,4 +1,4 @@
-package ru.lebruce.store.domain.exception;
+package ru.lebruce.store.exception;
 
 public class ProductAlreadyExistsException extends RuntimeException{
     public ProductAlreadyExistsException(String message) {

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
 @Data
-public class CreateReviewDTO {
+public class CreateReviewRequest {
     @NotNull(message = "ProductId не должно быть пустым")
     private Long productId;
 

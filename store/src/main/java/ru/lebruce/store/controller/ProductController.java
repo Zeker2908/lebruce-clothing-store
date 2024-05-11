@@ -3,15 +3,10 @@ package ru.lebruce.store.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.exception.ProductAlreadyExistsException;
-import ru.lebruce.store.domain.exception.ProductNotFoundException;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.service.ProductService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
