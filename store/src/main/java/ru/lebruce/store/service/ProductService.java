@@ -16,6 +16,8 @@ public interface ProductService {
 
     Product createProduct(Product product);
 
+    Double getAverageRatingForProduct(Long productId);
+
     void deleteProduct(Long productId);
 
     void deleteProduct(String productName);

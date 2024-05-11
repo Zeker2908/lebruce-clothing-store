@@ -20,13 +20,19 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public List<Product> findAllProducts() {
-        return service.findAllProducts();
+    public ResponseEntity<?> findAllProducts() {
+        return ResponseEntity.ok(service.findAllProducts());
     }
 
     @GetMapping("/{productName}")
     public ResponseEntity<?> findByProductName(@PathVariable String productName) {
         return ResponseEntity.ok(service.getByProductName(productName));
+    }
+
+    @GetMapping("/{productId}/average-rating")
+    public ResponseEntity<?> getAverageRatingForProduct(@PathVariable Long productId) {
+        Double averageRating = service.getAverageRatingForProduct(productId);
+        return ResponseEntity.ok(averageRating);
     }
 
     @PostMapping
@@ -59,6 +65,6 @@ public class ProductController {
 
     @ExceptionHandler(ProductAlreadyExistsException.class)
     public ResponseEntity<?> handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }

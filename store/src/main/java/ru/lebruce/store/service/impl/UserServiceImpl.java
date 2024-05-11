@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.exception.UserAlreadyExistsException;
+import ru.lebruce.store.domain.exception.UserNotFoundException;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.UserService;
@@ -17,6 +19,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+
 
     @Override
     public List<User> findAllUsers() {
@@ -41,18 +44,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
+        if(!repository.existsByUserId(user.getUserId())) {
+            throw new UserNotFoundException("Пользователь с ID " + user.getUserId() + " не существует");
+        }
         return repository.save(user);
     }
 
     @Override
     @Transactional
     public void deleteUsername(String username) {
+        if(!repository.existsByUsername(username)) {
+            throw new UserNotFoundException("Пользователь " + username + " не существует");
+        }
         repository.deleteByUsername(username);
     }
 
     @Override
     @Transactional
     public void deleteUser(String email) {
+        if(!repository.existsByEmail(email)) {
+            throw new UserNotFoundException("Пользователя с почтой " + email + " не существует");
+        }
         repository.deleteByEmail(email);
     }
 
@@ -64,11 +76,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Пользователь с таким именем уже существует");
-        }
-
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
+        }else if (repository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
         }
 
         return saveUser(user);

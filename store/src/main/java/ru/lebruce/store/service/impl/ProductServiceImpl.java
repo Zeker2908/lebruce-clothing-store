@@ -7,6 +7,7 @@ import ru.lebruce.store.domain.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.domain.exception.ProductNotFoundException;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.repository.ProductRepository;
+import ru.lebruce.store.repository.ReviewRepository;
 import ru.lebruce.store.service.ProductService;
 
 import java.util.List;
@@ -15,6 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
+    private final ReviewRepository reviewRepository;
+
+    private static final String PRODUCT_NOT_FOUND_MESSAGE_BY_NAME = "Товар с названием %s не найден";
+    private static final String PRODUCT_NOT_FOUND_MESSAGE_BY_ID = "Товар с ID %d не найден";
+    private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
 
     @Override
     public List<Product> findAllProducts() {
@@ -24,14 +30,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getByProductName(String productName) {
         return repository.findByProductName(productName)
-                .orElseThrow(() -> new ProductNotFoundException("Товар с названием " + productName + " не найден"));
-
+                .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND_MESSAGE_BY_NAME, productName)));
     }
 
     @Override
     public Product createProduct(Product product) {
-        if(repository.existsByProductNameAndBrandAndCategory(product.getProductName(), product.getBrand(), product.getCategory())) {
-            throw new ProductAlreadyExistsException("Такой товар уже существует");
+        if (repository.existsByProductNameAndBrandAndCategory(product.getProductName(), product.getBrand(), product.getCategory())) {
+            throw new ProductAlreadyExistsException(PRODUCT_ALREADY_EXISTS_MESSAGE);
         }
         return saveProduct(product);
     }
@@ -43,8 +48,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Product product) {
-        if(!repository.existsById(product.getProductId())) {
-            throw new ProductNotFoundException("Товар с ID " + product.getProductId() + " не найден");
+        if (!repository.existsById(product.getProductId())) {
+            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND_MESSAGE_BY_ID, product.getProductId()));
         }
         return repository.save(product);
     }
@@ -52,8 +57,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProduct(Long productId) {
-        if(!repository.existsByProductId(productId)) {
-            throw new ProductNotFoundException("Товар с ID " + productId + " не найден");
+        if (!repository.existsByProductId(productId)) {
+            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND_MESSAGE_BY_ID, productId));
         }
         repository.deleteByProductId(productId);
     }
@@ -61,9 +66,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProduct(String productName) {
-        if (!repository.existsByProductName(productName)){
-            throw new ProductNotFoundException("Товар с названием " + productName + " не найден");
+        if (!repository.existsByProductName(productName)) {
+            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND_MESSAGE_BY_NAME, productName));
         }
         repository.deleteByProductName(productName);
+    }
+
+    @Override
+    public Double getAverageRatingForProduct(Long productId) {
+        if (!repository.existsByProductId(productId)) {
+            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND_MESSAGE_BY_ID, productId));
+        }
+        return reviewRepository.findAverageRatingByProductId(productId);
     }
 }

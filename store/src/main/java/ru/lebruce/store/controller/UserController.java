@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.lebruce.store.domain.exception.UserAlreadyExistsException;
+import ru.lebruce.store.domain.exception.UserNotFoundException;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.UserService;
 
@@ -17,42 +19,49 @@ public class UserController {
     private final UserService service;
 
     @GetMapping
-    public List<User> findAllUser() {
-        return service.findAllUsers();
+    public ResponseEntity<?> findAllUser() {
+        return ResponseEntity.ok(service.findAllUsers());
     }
 
-    @GetMapping("/get_by_email/{email}")
+    @GetMapping("email/{email}")
     public ResponseEntity<?> getByEmail(@PathVariable String email) {
-        try {
-            return ResponseEntity.ok(service.getByEmail(email));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с почтой " + email + " не найден");
-        }
+        return ResponseEntity.ok(service.getByEmail(email));
     }
 
-    @GetMapping("get_by_username/{username}")
+    @GetMapping("username/{username}")
     public ResponseEntity<?> getByUsername(@PathVariable String username) {
-        try {
-            return ResponseEntity.ok(service.getByUsername(username));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с именем " + username + " не найден");
-        }
+        return ResponseEntity.ok(service.getByUsername(username));
     }
 
-    @PutMapping("update_user")
-    public User updateUser(@RequestBody User user) {
-        return service.updateUser(user);
+    @PutMapping()
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        return ResponseEntity.ok(service.updateUser(user));
     }
 
-    @DeleteMapping("delete_user_by_username/{username}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUsername(@PathVariable String username) {
+    @DeleteMapping("username/{username}")
+    public ResponseEntity<?> deleteUsername(@PathVariable String username) {
         service.deleteUsername(username);
+        return ResponseEntity.ok("Пользователь " + username + " успешно удален");
     }
 
-    @DeleteMapping("delete_user_by_email/{email}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable String email) {
+    @DeleteMapping("email/{email}")
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
         service.deleteUser(email);
+        return ResponseEntity.ok("Пользователь " + email + " успешно удален");
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

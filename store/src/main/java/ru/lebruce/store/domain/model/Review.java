@@ -1,9 +1,8 @@
 package ru.lebruce.store.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -23,10 +22,9 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Min(0)
-    @Max(5)
+    @Range(min = 1, max = 5)
     @Column(nullable = false)
-    private double rating;
+    private int rating;
 
     private String comment;
     private LocalDateTime datePosted;
