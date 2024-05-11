@@ -29,10 +29,9 @@ public class ProductController {
         return ResponseEntity.ok(service.getByProductName(productName));
     }
 
-    @GetMapping("/{productId}/average-rating")
+    @GetMapping("/average-rating/{productId}")
     public ResponseEntity<?> getAverageRatingForProduct(@PathVariable Long productId) {
-        Double averageRating = service.getAverageRatingForProduct(productId);
-        return ResponseEntity.ok(averageRating);
+        return ResponseEntity.ok(service.getAverageRatingForProduct(productId));
     }
 
     @PostMapping
