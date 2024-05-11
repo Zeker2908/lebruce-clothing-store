@@ -1,12 +1,18 @@
 package ru.lebruce.store.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "reviews")
 public class Review {
@@ -26,7 +32,9 @@ public class Review {
     @Column(nullable = false)
     private int rating;
 
+    @Column(length = 300)
     private String comment;
+
     private LocalDateTime datePosted;
 
     @PrePersist
