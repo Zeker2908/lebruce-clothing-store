@@ -2,7 +2,6 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.domain.exception.ProductNotFoundException;
@@ -53,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProduct(Long productId) {
-        if(!repository.existsById(productId)) {
+        if(!repository.existsByProductId(productId)) {
             throw new ProductNotFoundException("Товар с ID " + productId + " не найден");
         }
         repository.deleteByProductId(productId);
