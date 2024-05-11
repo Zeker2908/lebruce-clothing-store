@@ -44,8 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
         return saveReview(review);
     }
 
-    @Override
-    public boolean doesReviewExistForProductAndUser(Long productId, Long userId) {
+    private boolean doesReviewExistForProductAndUser(Long productId, Long userId) {
         return repository.findByProductIdAndUserId(productId, userId).isPresent();
     }
 }

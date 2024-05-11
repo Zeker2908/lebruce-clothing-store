@@ -9,6 +9,5 @@ public interface ReviewService {
     Review saveReview(Review review);
     Review updateReview(Review review);
     void deleteReview(Long reviewId);
-    boolean doesReviewExistForProductAndUser(Long productId, Long userId);
     Review createReview(Review review);
 }
