@@ -49,19 +49,4 @@ public class UserController {
         service.deleteUser(email);
         return ResponseEntity.ok("Пользователь " + email + " успешно удален");
     }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
 }

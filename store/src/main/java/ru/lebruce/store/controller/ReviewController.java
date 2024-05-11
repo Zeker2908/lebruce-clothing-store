@@ -29,19 +29,4 @@ public class ReviewController {
     public ResponseEntity<?> createReview(@RequestBody @Valid CreateReviewDTO review) {
         return ResponseEntity.ok(service.createReview(review));
     }
-
-    @ExceptionHandler(ReviewAlreadyExists.class)
-    public ResponseEntity<?> handleReviewAlreadyExists(ReviewAlreadyExists ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> handleProductNotFoundException(ProductNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
 }

@@ -57,13 +57,4 @@ public class ProductController {
         return ResponseEntity.ok("Товар с названием " + productName + " успешно удален");
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> handleProductNotFoundException(ProductNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(ProductAlreadyExistsException.class)
-    public ResponseEntity<?> handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
-    }
 }

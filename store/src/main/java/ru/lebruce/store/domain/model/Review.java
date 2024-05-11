@@ -32,7 +32,7 @@ public class Review {
     @Column(nullable = false)
     private int rating;
 
-    @Column(length = 300)
+    @Column(length = 500)
     private String comment;
 
     private LocalDateTime datePosted;
