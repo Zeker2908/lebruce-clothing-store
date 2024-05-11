@@ -1,10 +1,10 @@
 package ru.lebruce.store.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 
@@ -16,7 +16,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
+    @Column(nullable = false)
     private String productName;
+
+    @Column(nullable = false)
     private String brand;
 
     @ManyToOne
@@ -24,13 +27,17 @@ public class Product {
     private Category category;
 
     @Column(nullable = false)
+    @PositiveOrZero
     private double price;
 
     private String description;
 
     @Column(nullable = false)
+    @PositiveOrZero
     private int availableQuantity;
 
     @ElementCollection
-    private List<String> imageUrl;
+    @Column(nullable = false)
+    @Size(min = 1, max = 10)
+    private List<String> imageUrls;
 }

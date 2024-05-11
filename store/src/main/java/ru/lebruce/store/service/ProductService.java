@@ -8,11 +8,13 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
-    Product findByProductName(String productName);
+    Product getByProductName(String productName);
 
     Product saveProduct(Product product);
 
     Product updateProduct(Product product);
+
+    Product createProduct(Product product);
 
     void deleteProduct(Long productId);
 

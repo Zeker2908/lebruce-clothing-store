@@ -3,8 +3,6 @@ package ru.lebruce.store.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 @Data
 @Entity

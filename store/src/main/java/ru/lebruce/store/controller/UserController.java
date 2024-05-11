@@ -24,8 +24,7 @@ public class UserController {
     @GetMapping("/get_by_email/{email}")
     public ResponseEntity<?> getByEmail(@PathVariable String email) {
         try {
-            var user = service.getByEmail(email);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(service.getByEmail(email));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с почтой " + email + " не найден");
         }
@@ -34,8 +33,7 @@ public class UserController {
     @GetMapping("get_by_username/{username}")
     public ResponseEntity<?> getByUsername(@PathVariable String username) {
         try {
-            var user = service.getByUsername(username);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(service.getByUsername(username));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с именем " + username + " не найден");
         }

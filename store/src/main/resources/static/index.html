@@ -2,54 +2,82 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Create User</title>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>Аутентификация</title>
 </head>
 <body>
-<h1>Create User</h1>
-<form id="user-form">
-  <label for="firstName">First Name:</label>
-  <input type="text" id="firstName" name="firstName" required><br>
+<h1>Регистрация</h1>
+<form id="sign-up-form">
+  <label>
+    Имя пользователя:
+    <input type="text" name="username" required>
+  </label>
+  <br>
+  <label>
+    Почта:
+    <input type="email" name="email" required>
+  </label>
+  <br>
+  <label>
+    Пароль:
+    <input type="password" name="password" required>
+  </label>
+  <br>
+  <button type="submit">Зарегистрироваться</button>
+</form>
 
-  <label for="lastName">Last Name:</label>
-  <input type="text" id="lastName" name="lastName" required><br>
-
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required><br>
-
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required><br>
-
-  <label for="role">Role:</label>
-  <select id="role" name="role" required>
-    <option value="BUYER">Buyer</option>
-    <option value="ADMIN">Admin</option>
-  </select><br>
-
-  <button type="submit">Create User</button>
+<h1>Авторизация</h1>
+<form id="sign-in-form">
+  <label>
+    Имя пользователя:
+    <input type="text" name="username" required>
+  </label>
+  <br>
+  <label>
+    Пароль:
+    <input type="password" name="password" required>
+  </label>
+  <br>
+  <button type="submit">Войти</button>
 </form>
 
 <script>
-  document.getElementById('user-form').addEventListener('submit', function(event) {
+  document.getElementById('sign-up-form').addEventListener('submit', async (event) => {
     event.preventDefault();
+    const formData = new FormData(event.target);
+    const response = await fetch('/api/v1/auth/sign-up', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: formData.get('username'),
+        password: formData.get('password'),
+        email: formData.get('email')
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  });
 
-    const user = {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-      role: document.getElementById('role').value
-    };
+  document.getElementById('sign-in-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const response = await fetch('api/v1/auth/sign-in', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: formData.get('username'),
+        password: formData.get('password'),
+      }),
+    });
+    const data = await response.json();
 
-    axios.post('/api/v1/users/save_user', user)
-            .then(response => {
-              console.log(response.data);
-              alert('User created successfully');
-            })
-            .catch(error => {
-              console.error(error);
-              alert('Error creating user');
-            });
+    // Сохранить JWT-токен в куки
+    document.cookie = `Authorization=Bearer ${data.token}; max-age=${60 * 60 * 24 * 7}; path=/; secure; HttpOnly`;
+
+    console.log(data);
   });
 </script>
 </body>
