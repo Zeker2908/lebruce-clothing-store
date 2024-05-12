@@ -1,3 +1,4 @@
+
 package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
@@ -57,4 +58,5 @@ public class UserController {
     public void deleteUser(@PathVariable String email) {
         service.deleteUser(email);
     }
+
 }

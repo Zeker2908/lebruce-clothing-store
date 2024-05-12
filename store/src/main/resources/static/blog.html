@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/modal.css" type="text/css">
 </head>
 
 <body>
@@ -73,7 +74,23 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Sign in</a>
+                                <a class="login-trigger" href="#" data-target="#login" data-toggle="modal">Login</a>
+                                <div id="login" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button data-dismiss="modal" class="close">&times;</button>
+                                                <h4>Login</h4>
+                                                <form>
+                                                    <input type="text" name="username" class="username form-control" placeholder="Username"/>
+                                                    <input type="password" name="password" class="password form-control" placeholder="password"/>
+                                                    <input class="btn login" type="submit" value="Login" />
+                                                </form>
+                                                <a class="reg" href="registration.html"> Зарегистрироваться</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <a href="#">FAQs</a>
                             </div>
                             <div class="header__top__hover">
@@ -104,9 +121,6 @@
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
@@ -118,9 +132,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="favourute.html"><img src="img/icon/heart.png" alt=""></a>
+                        <a href="newbasket.html"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
                     </div>
                 </div>
             </div>

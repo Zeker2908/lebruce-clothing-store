@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/modal.css" type="text/css">
 </head>
 
 <body>
@@ -73,8 +74,23 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Sign in</a>
-                                <a href="#">FAQs</a>
+                                <a class="login-trigger" href="#" data-target="#login" data-toggle="modal">Login</a>
+                                <div id="login" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button data-dismiss="modal" class="close">&times;</button>
+                                                <h4>Login</h4>
+                                                <form>
+                                                    <input type="text" name="username" class="username form-control" placeholder="Username"/>
+                                                    <input type="password" name="password" class="password form-control" placeholder="password"/>
+                                                    <input class="btn login" type="submit" value="Login" />
+                                                </form>
+                                                <a class="reg" href="registration.html"> Зарегистрироваться</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                <a href="#">FAQs</a>
                             </div>
                             <div class="header__top__hover">
                                 <span>Usd <i class="arrow_carrot-down"></i></span>
@@ -104,9 +120,6 @@
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
@@ -118,9 +131,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="favourute.html"><img src="img/icon/heart.png" alt=""></a>
+                        <a href="newbasket.html"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
                     </div>
                 </div>
             </div>
@@ -175,8 +187,6 @@
                                                     <li><a href="#">Clothing (20)</a></li>
                                                     <li><a href="#">Shoes (20)</a></li>
                                                     <li><a href="#">Accessories (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
                                                     <li><a href="#">Kids (20)</a></li>
                                                 </ul>
                                             </div>
@@ -347,7 +357,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Piqué Biker Jacket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -356,17 +365,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$67.24</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -383,7 +381,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Multi-pocket Chest Bag</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -392,17 +389,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$43.48</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-7">
-                                            <input type="radio" id="pc-7">
-                                        </label>
-                                        <label class="active black" for="pc-8">
-                                            <input type="radio" id="pc-8">
-                                        </label>
-                                        <label class="grey" for="pc-9">
-                                            <input type="radio" id="pc-9">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -418,7 +404,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Diagonal Textured Cap</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -427,17 +412,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$60.9</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-10">
-                                            <input type="radio" id="pc-10">
-                                        </label>
-                                        <label class="active black" for="pc-11">
-                                            <input type="radio" id="pc-11">
-                                        </label>
-                                        <label class="grey" for="pc-12">
-                                            <input type="radio" id="pc-12">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -454,7 +428,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Ankle Boots</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -463,17 +436,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$98.49</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-16">
-                                            <input type="radio" id="pc-16">
-                                        </label>
-                                        <label class="active black" for="pc-17">
-                                            <input type="radio" id="pc-17">
-                                        </label>
-                                        <label class="grey" for="pc-18">
-                                            <input type="radio" id="pc-18">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -489,7 +451,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>T-shirt Contrast Pocket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -498,17 +459,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$49.66</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-19">
-                                            <input type="radio" id="pc-19">
-                                        </label>
-                                        <label class="active black" for="pc-20">
-                                            <input type="radio" id="pc-20">
-                                        </label>
-                                        <label class="grey" for="pc-21">
-                                            <input type="radio" id="pc-21">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -524,7 +474,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Basic Flowing Scarf</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -533,17 +482,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$26.28</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-22">
-                                            <input type="radio" id="pc-22">
-                                        </label>
-                                        <label class="active black" for="pc-23">
-                                            <input type="radio" id="pc-23">
-                                        </label>
-                                        <label class="grey" for="pc-24">
-                                            <input type="radio" id="pc-24">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -559,7 +497,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Piqué Biker Jacket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -568,17 +505,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$67.24</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-25">
-                                            <input type="radio" id="pc-25">
-                                        </label>
-                                        <label class="active black" for="pc-26">
-                                            <input type="radio" id="pc-26">
-                                        </label>
-                                        <label class="grey" for="pc-27">
-                                            <input type="radio" id="pc-27">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -595,7 +521,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Multi-pocket Chest Bag</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -604,17 +529,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$43.48</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-28">
-                                            <input type="radio" id="pc-28">
-                                        </label>
-                                        <label class="active black" for="pc-29">
-                                            <input type="radio" id="pc-29">
-                                        </label>
-                                        <label class="grey" for="pc-30">
-                                            <input type="radio" id="pc-30">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -630,7 +544,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Diagonal Textured Cap</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -639,17 +552,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$60.9</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-31">
-                                            <input type="radio" id="pc-31">
-                                        </label>
-                                        <label class="active black" for="pc-32">
-                                            <input type="radio" id="pc-32">
-                                        </label>
-                                        <label class="grey" for="pc-33">
-                                            <input type="radio" id="pc-33">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -666,7 +568,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Ankle Boots</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -675,17 +576,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$98.49</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-34">
-                                            <input type="radio" id="pc-34">
-                                        </label>
-                                        <label class="active black" for="pc-35">
-                                            <input type="radio" id="pc-35">
-                                        </label>
-                                        <label class="grey" for="pc-36">
-                                            <input type="radio" id="pc-36">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -701,7 +591,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>T-shirt Contrast Pocket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -710,17 +599,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$49.66</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-37">
-                                            <input type="radio" id="pc-37">
-                                        </label>
-                                        <label class="active black" for="pc-38">
-                                            <input type="radio" id="pc-38">
-                                        </label>
-                                        <label class="grey" for="pc-39">
-                                            <input type="radio" id="pc-39">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -736,7 +614,6 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>Basic Flowing Scarf</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -745,17 +622,6 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <h5>$26.28</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-40">
-                                            <input type="radio" id="pc-40">
-                                        </label>
-                                        <label class="active black" for="pc-41">
-                                            <input type="radio" id="pc-41">
-                                        </label>
-                                        <label class="grey" for="pc-42">
-                                            <input type="radio" id="pc-42">
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>

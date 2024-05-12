@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/modal.css" type="text/css">
 </head>
 
 <body>
@@ -29,36 +30,6 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
-    <!-- Offcanvas Menu Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__option">
-            <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
-            </div>
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
-            </div>
-        </div>
-        <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-            <a href="#"><img src="img/icon/heart.png" alt=""></a>
-            <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-            <div class="price">$0.00</div>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__text">
-            <p>Free shipping, 30-day return or refund guarantee.</p>
-        </div>
-    </div>
-    <!-- Offcanvas Menu End -->
 
     <!-- Header Section Begin -->
     <header class="header">
@@ -73,7 +44,23 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <a href="#">Sign in</a>
+                                <a class="login-trigger" href="#" data-target="#login" data-toggle="modal">Login</a>
+                                <div id="login" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <button data-dismiss="modal" class="close">&times;</button>
+                                                <h4>Login</h4>
+                                                <form>
+                                                    <input type="text" name="username" class="username form-control" placeholder="Username"/>
+                                                    <input type="password" name="password" class="password form-control" placeholder="password"/>
+                                                    <input class="btn login" type="submit" value="Login" />
+                                                </form>
+                                                <a class="reg" href="registration.html"> Зарегистрироваться</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <a href="#">FAQs</a>
                             </div>
                             <div class="header__top__hover">
@@ -105,8 +92,6 @@
                                 <ul class="dropdown">
                                     <li><a href="./about.html">About Us</a></li>
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
@@ -118,9 +103,8 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a href="favourute.html"><img src="img/icon/heart.png" alt=""></a>
+                        <a href="newbasket.html"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
                     </div>
                 </div>
             </div>
@@ -135,12 +119,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Shopping Cart</h4>
-                        <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Shopping Cart</span>
-                        </div>
+                        <h4>Корзина</h4>
                     </div>
                 </div>
             </div>
@@ -157,9 +136,9 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Товар</th>
+                                    <th>Кол-во</th>
+                                    <th>Сумма</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -247,34 +226,14 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
-                        </form>
-                    </div>
-                    <div class="cart__total">
-                        <h6>Cart total</h6>
+                        <div class="cart__total">
+                        <h6>Заказ</h6>
                         <ul>
-                            <li>Subtotal <span>$ 169.50</span></li>
-                            <li>Total <span>$ 169.50</span></li>
+                            <li>Итого <span>$ 169.50</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <a href="paypage.html" class="primary-btn">Оформить заказ</a>
                     </div>
                 </div>
             </div>
@@ -370,6 +329,7 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
+    <script src="js/newdelete.js"></script>
     <script src="js/main.js"></script>
 </body>
 
