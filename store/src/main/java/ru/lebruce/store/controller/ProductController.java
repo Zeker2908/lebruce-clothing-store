@@ -5,8 +5,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.lebruce.store.domain.dto.CreateProductRequest;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.service.ProductService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -30,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody @Valid Product product) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid CreateProductRequest product) {
         return ResponseEntity.ok(service.createProduct(product));
     }
 

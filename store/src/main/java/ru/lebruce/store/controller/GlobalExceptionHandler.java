@@ -33,8 +33,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
     @ExceptionHandler(ReviewAlreadyExists.class)
     public ResponseEntity<?> handleReviewAlreadyExists(ReviewAlreadyExists ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<?> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
