@@ -1,13 +1,13 @@
 package ru.lebruce.store.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
+import ru.lebruce.store.domain.dto.SetPasswordRequest;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
-import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.service.AuthenticationService;
 import ru.lebruce.store.service.UserService;
 
 @RestController
@@ -15,6 +15,7 @@ import ru.lebruce.store.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
+    private final AuthenticationService authenticationService;
 
     @GetMapping
     public ResponseEntity<?> findAllUser() {
@@ -34,6 +35,16 @@ public class UserController {
     @GetMapping("current")
     public ResponseEntity<?> getCurrentUser() {
         return ResponseEntity.ok(service.getCurrentUser());
+    }
+
+    @PutMapping("/password")
+    public JwtAuthenticationResponse setPassword(@RequestBody @Valid SetPasswordRequest request) {
+        return authenticationService.setPassword(request);
+    }
+
+    @PutMapping()
+    public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
+        return authenticationService.updateUser(request);
     }
 
     @DeleteMapping("username/{username}")

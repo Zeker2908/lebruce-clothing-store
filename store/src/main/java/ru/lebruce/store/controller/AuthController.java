@@ -27,14 +27,5 @@ public class AuthController {
         return authenticationService.signIn(request);
     }
 
-    @PutMapping("/password")
-    public JwtAuthenticationResponse setPassword(@RequestBody @Valid SetPasswordRequest request) {
-        return authenticationService.setPassword(request);
-    }
-
-    @PutMapping("/user")
-    public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
-        return authenticationService.updateUser(request);
-    }
 }
 
