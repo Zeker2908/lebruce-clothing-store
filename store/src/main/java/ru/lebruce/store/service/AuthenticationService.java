@@ -5,10 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
-import ru.lebruce.store.domain.dto.SetPasswordRequest;
-import ru.lebruce.store.domain.dto.SignInRequest;
-import ru.lebruce.store.domain.dto.SignUpRequest;
+import ru.lebruce.store.domain.dto.*;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
 
@@ -33,6 +30,8 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_USER)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .build();
 
         userService.create(user);
@@ -68,4 +67,10 @@ public class AuthenticationService {
         userService.saveUser(user);
         return new JwtAuthenticationResponse(jwtService.generateToken(user));
     }
+
+    public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest){
+        return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
+    }
+
+
 }

@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
-import ru.lebruce.store.domain.dto.SetPasswordRequest;
-import ru.lebruce.store.domain.dto.SignInRequest;
-import ru.lebruce.store.domain.dto.SignUpRequest;
+import ru.lebruce.store.domain.dto.*;
 import ru.lebruce.store.service.AuthenticationService;
 
 @RestController
@@ -33,6 +30,11 @@ public class AuthController {
     @PutMapping("/password")
     public JwtAuthenticationResponse setPassword(@RequestBody @Valid SetPasswordRequest request) {
         return authenticationService.setPassword(request);
+    }
+
+    @PutMapping("/user")
+    public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
+        return authenticationService.updateUser(request);
     }
 }
 

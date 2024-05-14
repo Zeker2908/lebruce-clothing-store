@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.exception.UserNotFoundException;
@@ -52,9 +53,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UpdateUserRequest userRequest) {
-        User user = repository.findByUserId(userRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID " + userRequest.getUserId() + " не найден"));
+        User user = getCurrentUser();
 
+        Optional.ofNullable(userRequest.getUsername())
+                .filter(username -> !username.isEmpty())
+                .filter(username -> !repository.existsByUsername(username))
+                .ifPresent(user::setUsername);
         Optional.ofNullable(userRequest.getEmail())
                 .filter(email -> !email.isEmpty())
                 .filter(email -> !repository.existsByEmail(email))

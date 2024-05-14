@@ -31,10 +31,4 @@ public class ExampleController {
         return "Hello, admin!";
     }
 
-    @GetMapping("/get-admin/{username}")
-    @Operation(summary = "Получить роль ADMIN (для демонстрации)")
-    public void getAdmin(@PathVariable String username) {
-        service.getAdmin(username);
-    }
-
 }

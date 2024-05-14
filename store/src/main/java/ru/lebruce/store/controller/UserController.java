@@ -1,8 +1,10 @@
 package ru.lebruce.store.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.User;
@@ -34,11 +36,6 @@ public class UserController {
         return ResponseEntity.ok(service.getCurrentUser());
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequest user) {
-        return ResponseEntity.ok(service.updateUser(user));
-    }
-
     @DeleteMapping("username/{username}")
     public ResponseEntity<?> deleteUsername(@PathVariable String username) {
         service.deleteUsername(username);
@@ -49,5 +46,12 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable String email) {
         service.deleteUser(email);
         return ResponseEntity.ok("Пользователь " + email + " успешно удален");
+    }
+
+    //todo как все настрою раскомментировать
+    //@PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("get_admin/{username}")
+    public void getAdmin(@PathVariable String username) {
+        service.getAdmin(username);
     }
 }
