@@ -2,10 +2,15 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.exception.UserNotFoundException;
 import ru.lebruce.store.domain.model.User;
@@ -13,10 +18,13 @@ import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.UserService;
 import ru.lebruce.store.domain.model.Role;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден";
 
     private final UserRepository repository;
 
@@ -43,10 +51,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        if(!repository.existsByUserId(user.getUserId())) {
-            throw new UserNotFoundException("Пользователь с ID " + user.getUserId() + " не существует");
-        }
+    public User updateUser(UpdateUserRequest userRequest) {
+        User user = repository.findByUserId(userRequest.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID " + userRequest.getUserId() + " не найден"));
+
+        Optional.ofNullable(userRequest.getEmail())
+                .filter(email -> !email.isEmpty())
+                .filter(email -> !repository.existsByEmail(email))
+                .ifPresent(user::setEmail);
+        Optional.ofNullable(userRequest.getFirstName())
+                .filter(firstName -> !firstName.isEmpty())
+                .ifPresent(user::setFirstName);
+        Optional.ofNullable(userRequest.getLastName())
+                .filter(lastName -> !lastName.isEmpty())
+                .ifPresent(user::setLastName);
+
+
         return repository.save(user);
     }
 
@@ -115,9 +135,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getCurrentUser() {
-        // Получение имени пользователя из контекста Spring Security
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getByUsername(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            return repository.findByUsername(userDetails.getUsername()).orElseThrow(()->
+                    new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
+        } else {
+            throw new AuthenticationCredentialsNotFoundException("Пользователь не аутентифицирован");
+        }
     }
 
 
@@ -127,9 +151,8 @@ public class UserServiceImpl implements UserService {
      * Нужен для демонстрации
      */
     @Override
-    @Deprecated
-    public void getAdmin() {
-        var user = getCurrentUser();
+    public void getAdmin(String username) {
+        var user = getByUsername(username);
         user.setRole(Role.ROLE_ADMIN);
         saveUser(user);
     }

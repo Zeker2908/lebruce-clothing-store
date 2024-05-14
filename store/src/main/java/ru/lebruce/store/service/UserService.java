@@ -1,6 +1,7 @@
 package ru.lebruce.store.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.User;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface UserService {
 
     User getByEmail(String email);
 
-    User updateUser(User user);
+    User updateUser(UpdateUserRequest user);
 
     User getByUsername(String username);
 
@@ -27,5 +28,5 @@ public interface UserService {
 
     User getCurrentUser();
 
-    void getAdmin();
+    void getAdmin(String username);
 }

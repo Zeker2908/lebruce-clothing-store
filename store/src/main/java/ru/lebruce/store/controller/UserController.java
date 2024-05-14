@@ -1,14 +1,16 @@
 package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
     private final UserService service;
 
@@ -27,8 +29,13 @@ public class UserController {
         return ResponseEntity.ok(service.getByUsername(username));
     }
 
+    @GetMapping("current")
+    public ResponseEntity<?> getCurrentUser() {
+        return ResponseEntity.ok(service.getCurrentUser());
+    }
+
     @PutMapping()
-    public ResponseEntity<?> updateUser(@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequest user) {
         return ResponseEntity.ok(service.updateUser(user));
     }
 

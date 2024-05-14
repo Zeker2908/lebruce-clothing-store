@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
+import ru.lebruce.store.domain.dto.SetPasswordRequest;
 import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
 import ru.lebruce.store.domain.model.Role;
@@ -58,5 +59,13 @@ public class AuthenticationService {
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    //todo Позже реализовать подтверждение через почту
+    public JwtAuthenticationResponse setPassword(SetPasswordRequest passwordRequest){
+        var user = userService.getCurrentUser();
+        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+        userService.saveUser(user);
+        return new JwtAuthenticationResponse(jwtService.generateToken(user));
     }
 }
