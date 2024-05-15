@@ -11,7 +11,7 @@ import ru.lebruce.store.domain.model.User;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationUserService {
     private final UserService userService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -61,14 +61,14 @@ public class AuthenticationService {
     }
 
     //todo Позже реализовать подтверждение через почту
-    public JwtAuthenticationResponse setPassword(SetPasswordRequest passwordRequest){
+    public JwtAuthenticationResponse setPassword(SetPasswordRequest passwordRequest) {
         var user = userService.getCurrentUser();
         user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
         userService.saveUser(user);
         return new JwtAuthenticationResponse(jwtService.generateToken(user));
     }
 
-    public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest){
+    public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest) {
         return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
     }
 

@@ -4,16 +4,21 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.dto.*;
-import ru.lebruce.store.service.AuthenticationService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
+import ru.lebruce.store.domain.dto.SignInRequest;
+import ru.lebruce.store.domain.dto.SignUpRequest;
+import ru.lebruce.store.service.AuthenticationUserService;
 
 @RestController
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
-    private final AuthenticationService authenticationService;
+    private final AuthenticationUserService authenticationService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
