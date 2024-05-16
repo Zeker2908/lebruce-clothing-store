@@ -5,13 +5,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.*;
-import ru.lebruce.store.domain.model.ConfirmationToken;
+import ru.lebruce.store.domain.model.PendingUser;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.EmailNotConfirmException;
 import ru.lebruce.store.exception.TokenExpiredException;
 import ru.lebruce.store.exception.TokenNotFoundException;
+import ru.lebruce.store.repository.PendingUserRepository;
 import ru.lebruce.store.service.impl.DefaultEmailService;
 
 import java.time.LocalDateTime;
@@ -25,6 +27,7 @@ public class AuthenticationUserService {
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
     private final DefaultEmailService defaultEmailService;
+    private final PendingUserRepository pendingUserRepository;
 
 
     /**
@@ -34,18 +37,18 @@ public class AuthenticationUserService {
      */
     public void signUp(SignUpRequest request) {
 
-        var user = User.builder()
+        var pendingUser = PendingUser.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER)
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .build();
 
-        userService.create(user);
-        var token = confirmationTokenService.generateToken(user);
-        defaultEmailService.sendConfirmationEmail(user, token.getToken());
+
+        pendingUserRepository.save(pendingUser);
+        var token = confirmationTokenService.generateToken(pendingUser);
+        defaultEmailService.sendConfirmationEmail(pendingUser, token.getToken());
     }
 
     /**
@@ -56,8 +59,9 @@ public class AuthenticationUserService {
      */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
 
-        if (!userService.getByUsername(request.getUsername()).isConfirmedEmail())
+        if (pendingUserRepository.existsByUsername(request.getUsername())) {
             throw new EmailNotConfirmException("Подтвердите почту");
+        }
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
@@ -84,17 +88,29 @@ public class AuthenticationUserService {
         return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
     }
 
+    @Transactional
     public void confirmEmail(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token)
+        var confirmationToken = confirmationTokenService.getToken(token)
                 .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
 
-        if (!confirmationToken.isActive() || confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Токен истек");
         }
 
-        confirmationTokenService.setConfirmedAt(confirmationToken);
-        userService.confirmedEmail(confirmationToken.getUser().getUsername());
-        confirmationTokenService.disableToken(confirmationToken);
+        var pendingUser = pendingUserRepository.findByEmail(confirmationToken.getUser().getEmail())
+                .orElseThrow(() -> new RuntimeException("Временный пользователь не найден"));
+
+        var user = User.builder()
+                .username(pendingUser.getUsername())
+                .email(pendingUser.getEmail())
+                .password(pendingUser.getPassword())
+                .role(Role.ROLE_USER)
+                .firstName(pendingUser.getFirstName())
+                .lastName(pendingUser.getLastName())
+                .build();
+
+        userService.create(user);
+        confirmationTokenService.deleteToken(token);
     }
 
 

@@ -3,7 +3,8 @@ package ru.lebruce.store.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.model.ConfirmationToken;
-import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.domain.model.PendingUser;
+import ru.lebruce.store.exception.TokenNotFoundException;
 import ru.lebruce.store.repository.ConfirmationTokenRepository;
 
 import java.time.LocalDateTime;
@@ -27,26 +28,22 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.findByToken(token);
     }
 
-    public void setConfirmedAt(ConfirmationToken token) {
-        token.setConfirmedAt(LocalDateTime.now());
-        saveConfirmationToken(token);
-    }
 
-    public void disableToken(ConfirmationToken token) {
-        token.setActive(false);
-        saveConfirmationToken(token);
-    }
-
-    public ConfirmationToken generateToken(User user) {
+    public ConfirmationToken generateToken(PendingUser user) {
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = ConfirmationToken.builder()
                 .token(token)
                 .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .expiresAt(LocalDateTime.now().plusMinutes(5))
                 .user(user)
-                .isActive(true)
                 .build();
         return saveConfirmationToken(confirmationToken);
+    }
+
+    public void deleteToken(String token) {
+        confirmationTokenRepository.findByToken(token).orElseThrow(() ->
+                new TokenNotFoundException("Токен не найден"));
+        confirmationTokenRepository.deleteByToken(token);
     }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.util.ResourceUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import ru.lebruce.store.abstracts.AbstractEmailContext;
-import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.domain.model.PendingUser;
 import ru.lebruce.store.service.EmailService;
 
 import java.io.FileNotFoundException;
@@ -67,7 +67,7 @@ public class DefaultEmailService implements EmailService {
         emailSender.send(mimeMessage);
     }
 
-    public void sendConfirmationEmail(User user, String confirmationToken) {
+    public void sendConfirmationEmail(PendingUser user, String confirmationToken) {
         String subject = "Подтверждение email";
         String confirmationUrl = appUrl + "/api/v1/auth/confirm?token=" + confirmationToken;
         String message = "Для подтверждения email перейдите по ссылке: " + confirmationUrl;

@@ -29,6 +29,4 @@ public interface UserService {
     User getCurrentUser();
 
     void getAdmin(String username);
-
-    void confirmedEmail(String username);
 }

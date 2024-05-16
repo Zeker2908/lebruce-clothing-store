@@ -19,7 +19,7 @@ public class ConfirmationToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tokenId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String token;
 
     @Column(nullable = false)
@@ -28,12 +28,8 @@ public class ConfirmationToken {
     @Column(nullable = false)
     private LocalDateTime expiresAt;
 
-    @Column(nullable = true)
-    private LocalDateTime confirmedAt;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(nullable = false, name = "pending_user_id")
+    private PendingUser user;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "user_id")
-    private User user;
-
-    private boolean isActive;
 }

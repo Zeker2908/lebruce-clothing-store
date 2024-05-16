@@ -164,11 +164,4 @@ public class UserServiceImpl implements UserService {
         saveUser(user);
     }
 
-    @Override
-    public void confirmedEmail(String username) {
-        var user = repository.findByUsername(username).orElseThrow(() ->
-                new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
-        user.setConfirmedEmail(true);
-        saveUser(user);
-    }
 }
