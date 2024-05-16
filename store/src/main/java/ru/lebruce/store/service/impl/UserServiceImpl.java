@@ -2,22 +2,21 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
+import ru.lebruce.store.domain.model.Role;
+import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.exception.UserNotFoundException;
-import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.UserService;
-import ru.lebruce.store.domain.model.Role;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +41,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Получение пользователя по почте
-     *<p>
-     * @return  пользователь
+     * <p>
+     *
+     * @return пользователь
      */
     @Override
     public User getByEmail(String email) {
@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUsername(String username) {
-        if(!repository.existsByUsername(username)) {
-            throw new UserNotFoundException("Пользователь " + username + " не существует");
+        if (!repository.existsByUsername(username)) {
+            throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
         }
         repository.deleteByUsername(username);
     }
@@ -86,22 +86,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(String email) {
-        if(!repository.existsByEmail(email)) {
-            throw new UserNotFoundException("Пользователя с почтой " + email + " не существует");
+        if (!repository.existsByEmail(email)) {
+            throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
         }
         repository.deleteByEmail(email);
     }
 
     /**
      * Создание пользователя
-     *<p>
+     * <p>
+     *
      * @return созданный пользователь
      */
     @Override
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
             throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
-        }else if (repository.existsByEmail(user.getEmail())) {
+        } else if (repository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
         }
 
@@ -110,13 +111,14 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Получение пользователя по имени пользователя
-     *<p>
+     * <p>
+     *
      * @return пользователь
      */
     @Override
     public User getByUsername(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_MESSAGE));
 
     }
 
@@ -134,14 +136,15 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Получение текущего пользователя
-     *<p>
+     * <p>
+     *
      * @return текущий пользователь
      */
     @Override
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
-            return repository.findByUsername(userDetails.getUsername()).orElseThrow(()->
+            return repository.findByUsername(userDetails.getUsername()).orElseThrow(() ->
                     new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
         } else {
             throw new AuthenticationCredentialsNotFoundException("Пользователь не аутентифицирован");
@@ -158,6 +161,14 @@ public class UserServiceImpl implements UserService {
     public void getAdmin(String username) {
         var user = getByUsername(username);
         user.setRole(Role.ROLE_ADMIN);
+        saveUser(user);
+    }
+
+    @Override
+    public void confirmedEmail(String username) {
+        var user = repository.findByUsername(username).orElseThrow(() ->
+                new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
+        user.setConfirmedEmail(true);
         saveUser(user);
     }
 }

@@ -59,7 +59,6 @@ public class UserController {
         return ResponseEntity.ok("Пользователь " + email + " успешно удален");
     }
 
-    //todo как все настрою раскомментировать
     //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("get_admin/{username}")
     public void getAdmin(@PathVariable String username) {

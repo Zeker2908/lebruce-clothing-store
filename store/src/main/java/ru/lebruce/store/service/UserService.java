@@ -1,7 +1,6 @@
 package ru.lebruce.store.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.User;
 
@@ -30,4 +29,6 @@ public interface UserService {
     User getCurrentUser();
 
     void getAdmin(String username);
+
+    void confirmedEmail(String username);
 }

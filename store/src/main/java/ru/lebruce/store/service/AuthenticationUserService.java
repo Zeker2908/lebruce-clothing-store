@@ -6,8 +6,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.*;
+import ru.lebruce.store.domain.model.ConfirmationToken;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.exception.EmailNotConfirmException;
+import ru.lebruce.store.exception.TokenExpiredException;
+import ru.lebruce.store.exception.TokenNotFoundException;
+import ru.lebruce.store.service.impl.DefaultEmailService;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -16,14 +23,16 @@ public class AuthenticationUserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final DefaultEmailService defaultEmailService;
+
 
     /**
      * Регистрация пользователя
      *
      * @param request данные пользователя
-     * @return токен
      */
-    public JwtAuthenticationResponse signUp(SignUpRequest request) {
+    public void signUp(SignUpRequest request) {
 
         var user = User.builder()
                 .username(request.getUsername())
@@ -35,9 +44,8 @@ public class AuthenticationUserService {
                 .build();
 
         userService.create(user);
-
-        var jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(jwt);
+        var token = confirmationTokenService.generateToken(user);
+        defaultEmailService.sendConfirmationEmail(user, token.getToken());
     }
 
     /**
@@ -47,6 +55,10 @@ public class AuthenticationUserService {
      * @return токен
      */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
+
+        if (!userService.getByUsername(request.getUsername()).isConfirmedEmail())
+            throw new EmailNotConfirmException("Почта не подтверждена");
+
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
                 request.getPassword()
@@ -70,6 +82,19 @@ public class AuthenticationUserService {
 
     public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest) {
         return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
+    }
+
+    public void confirmEmail(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token)
+                .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
+        if (!confirmationToken.isActive()) throw new TokenExpiredException("Токен истек");
+        else if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now()))
+            throw new TokenExpiredException("Токен истек");
+
+        confirmationTokenService.setConfirmedAt(confirmationToken);
+        userService.confirmedEmail(confirmationToken.getUser().getUsername());
+        confirmationTokenService.disableConfirmation(confirmationToken);
+
     }
 
 
