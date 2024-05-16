@@ -2,6 +2,7 @@ package ru.lebruce.store.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AuthController {
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
         authenticationService.signUp(request);
         return ResponseEntity.ok("На вашу почту " + (request.getEmail()) + " отправлено письмо");
     }

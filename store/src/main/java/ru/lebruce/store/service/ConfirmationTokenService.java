@@ -15,8 +15,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ConfirmationTokenService {
-    private static final int TOKEN_LENGTH = 32;
-
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserService userService;
 

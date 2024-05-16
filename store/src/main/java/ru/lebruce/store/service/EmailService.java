@@ -2,13 +2,11 @@ package ru.lebruce.store.service;
 
 import jakarta.mail.MessagingException;
 import ru.lebruce.store.abstracts.AbstractEmailContext;
-
-import java.io.FileNotFoundException;
+import ru.lebruce.store.domain.model.PendingUser;
 
 public interface EmailService {
-    void sendMail(AbstractEmailContext email) throws MessagingException;
+    void sendConfirmationEmail(AbstractEmailContext email) throws MessagingException;
 
-    void sendSimpleEmail(String toAddress, String subject, String message);
+    public AbstractEmailContext confirmEmailContext(PendingUser pendingUser, String confirmationToken);
 
-    void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment) throws MessagingException, FileNotFoundException;
 }

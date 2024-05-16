@@ -1,5 +1,6 @@
 package ru.lebruce.store.service;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +15,6 @@ import ru.lebruce.store.exception.EmailNotConfirmException;
 import ru.lebruce.store.exception.TokenExpiredException;
 import ru.lebruce.store.exception.TokenNotFoundException;
 import ru.lebruce.store.repository.PendingUserRepository;
-import ru.lebruce.store.service.impl.DefaultEmailService;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +26,7 @@ public class AuthenticationUserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
-    private final DefaultEmailService defaultEmailService;
+    private final EmailService emailService;
     private final PendingUserRepository pendingUserRepository;
 
 
@@ -35,7 +35,7 @@ public class AuthenticationUserService {
      *
      * @param request данные пользователя
      */
-    public void signUp(SignUpRequest request) {
+    public void signUp(SignUpRequest request) throws MessagingException {
 
         var pendingUser = PendingUser.builder()
                 .username(request.getUsername())
@@ -48,7 +48,8 @@ public class AuthenticationUserService {
 
         pendingUserRepository.save(pendingUser);
         var token = confirmationTokenService.generateToken(pendingUser);
-        defaultEmailService.sendConfirmationEmail(pendingUser, token.getToken());
+        var emailContext = emailService.confirmEmailContext(pendingUser, token.getToken());
+        emailService.sendConfirmationEmail(emailContext);
     }
 
     /**
