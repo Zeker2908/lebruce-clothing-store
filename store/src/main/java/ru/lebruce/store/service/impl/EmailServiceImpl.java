@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public AbstractEmailContext confirmEmailContext(PendingUser pendingUser, String confirmationToken) {
         Map<String, Object> context = new HashMap<>();
-        context.put("userName", pendingUser.getUsername());
+        context.put("firstName", pendingUser.getFirstName());
         context.put("verificationURL", appUrl + "/api/v1/auth/confirm?token=" + confirmationToken);
         return AbstractEmailContext.builder()
                 .from(from)

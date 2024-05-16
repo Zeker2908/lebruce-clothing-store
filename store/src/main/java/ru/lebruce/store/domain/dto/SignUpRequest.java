@@ -32,6 +32,7 @@ public class SignUpRequest {
 
     @Schema(description = "Имя", example = "Иван")
     @Size(min = 1, max = 25, message = "Длина имени должна быть не более 25 символов")
+    @NotBlank(message = "Имя не должно быть пустым")
     private String firstName;
 
     @Schema(description = "Фамилия", example = "Иванов")
