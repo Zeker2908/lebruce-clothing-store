@@ -32,7 +32,7 @@ public class ConfirmationTokenService {
         saveConfirmationToken(token);
     }
 
-    public void disableConfirmation(ConfirmationToken token) {
+    public void disableToken(ConfirmationToken token) {
         token.setActive(false);
         saveConfirmationToken(token);
     }

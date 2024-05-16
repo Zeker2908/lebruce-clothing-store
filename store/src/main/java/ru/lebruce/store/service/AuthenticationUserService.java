@@ -57,7 +57,7 @@ public class AuthenticationUserService {
     public JwtAuthenticationResponse signIn(SignInRequest request) {
 
         if (!userService.getByUsername(request.getUsername()).isConfirmedEmail())
-            throw new EmailNotConfirmException("Почта не подтверждена");
+            throw new EmailNotConfirmException("Подтвердите почту");
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
@@ -87,14 +87,14 @@ public class AuthenticationUserService {
     public void confirmEmail(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token)
                 .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
-        if (!confirmationToken.isActive()) throw new TokenExpiredException("Токен истек");
-        else if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now()))
+
+        if (!confirmationToken.isActive() || confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Токен истек");
+        }
 
         confirmationTokenService.setConfirmedAt(confirmationToken);
         userService.confirmedEmail(confirmationToken.getUser().getUsername());
-        confirmationTokenService.disableConfirmation(confirmationToken);
-
+        confirmationTokenService.disableToken(confirmationToken);
     }
 
 

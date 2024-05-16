@@ -31,7 +31,7 @@ public class ConfirmationToken {
     @Column(nullable = true)
     private LocalDateTime confirmedAt;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 

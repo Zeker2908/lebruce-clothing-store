@@ -22,7 +22,7 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
         authenticationService.signUp(request);
-        return ResponseEntity.ok("К вам на почту отправлено письмо");
+        return ResponseEntity.ok("На вашу почту " + (request.getEmail()) + " отправлено письмо");
     }
 
     @Operation(summary = "Авторизация пользователя")
