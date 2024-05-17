@@ -1,4 +1,4 @@
-package ru.lebruce.store.abstracts;
+package ru.lebruce.store.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AbstractEmailContext {
+public class EmailContext {
     private String from;
     private String to;
     private String subject;
