@@ -39,7 +39,6 @@ public class AuthenticationUserService {
 
         var pendingUser = PendingUser.builder()
                 .username(request.getUsername())
-                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -98,12 +97,11 @@ public class AuthenticationUserService {
             throw new TokenExpiredException("Токен истек");
         }
 
-        var pendingUser = pendingUserRepository.findByEmail(confirmationToken.getUser().getEmail())
+        var pendingUser = pendingUserRepository.findByUsername(confirmationToken.getUser().getUsername())
                 .orElseThrow(() -> new RuntimeException("Временный пользователь не найден"));
 
         var user = User.builder()
                 .username(pendingUser.getUsername())
-                .email(pendingUser.getEmail())
                 .password(pendingUser.getPassword())
                 .role(Role.ROLE_USER)
                 .firstName(pendingUser.getFirstName())

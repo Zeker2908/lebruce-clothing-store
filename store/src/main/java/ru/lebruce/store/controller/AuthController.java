@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
         authenticationService.signUp(request);
-        return ResponseEntity.ok("На вашу почту " + (request.getEmail()) + " отправлено письмо");
+        return ResponseEntity.ok("На вашу почту " + (request.getUsername()) + " отправлено письмо");
     }
 
     @Operation(summary = "Авторизация пользователя")

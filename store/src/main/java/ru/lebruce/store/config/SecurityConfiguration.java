@@ -1,4 +1,5 @@
 package ru.lebruce.store.config;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,9 +46,9 @@ public class SecurityConfiguration {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                        .requestMatchers("api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/endpoint", "api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/endpoint", "/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())

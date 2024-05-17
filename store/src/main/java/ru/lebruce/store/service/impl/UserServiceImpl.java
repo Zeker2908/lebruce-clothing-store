@@ -45,11 +45,6 @@ public class UserServiceImpl implements UserService {
      *
      * @return пользователь
      */
-    @Override
-    public User getByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
-    }
 
     @Override
     public User updateUser(UpdateUserRequest userRequest) {
@@ -59,10 +54,6 @@ public class UserServiceImpl implements UserService {
                 .filter(username -> !username.isEmpty())
                 .filter(username -> !repository.existsByUsername(username))
                 .ifPresent(user::setUsername);
-        Optional.ofNullable(userRequest.getEmail())
-                .filter(email -> !email.isEmpty())
-                .filter(email -> !repository.existsByEmail(email))
-                .ifPresent(user::setEmail);
         Optional.ofNullable(userRequest.getFirstName())
                 .filter(firstName -> !firstName.isEmpty())
                 .ifPresent(user::setFirstName);
@@ -76,20 +67,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUsername(String username) {
+    public void deleteUser(String username) {
         if (!repository.existsByUsername(username)) {
             throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
         }
         repository.deleteByUsername(username);
-    }
-
-    @Override
-    @Transactional
-    public void deleteUser(String email) {
-        if (!repository.existsByEmail(email)) {
-            throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
-        }
-        repository.deleteByEmail(email);
     }
 
     /**
@@ -101,8 +83,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
-        } else if (repository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
         }
 

@@ -22,11 +22,6 @@ public class UserController {
         return ResponseEntity.ok(service.findAllUsers());
     }
 
-    @GetMapping("email/{email}")
-    public ResponseEntity<?> getByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(service.getByEmail(email));
-    }
-
     @GetMapping("username/{username}")
     public ResponseEntity<?> getByUsername(@PathVariable String username) {
         return ResponseEntity.ok(service.getByUsername(username));
@@ -47,16 +42,10 @@ public class UserController {
         return authenticationService.updateUser(request);
     }
 
-    @DeleteMapping("username/{username}")
+    @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteUsername(@PathVariable String username) {
-        service.deleteUsername(username);
+        service.deleteUser(username);
         return ResponseEntity.ok("Пользователь " + username + " успешно удален");
-    }
-
-    @DeleteMapping("email/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email) {
-        service.deleteUser(email);
-        return ResponseEntity.ok("Пользователь " + email + " успешно удален");
     }
 
     //@PreAuthorize("hasRole('ADMIN')")

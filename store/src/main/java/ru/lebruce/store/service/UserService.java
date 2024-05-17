@@ -13,19 +13,14 @@ public interface UserService {
 
     User create(User user);
 
-    User getByEmail(String email);
-
     User updateUser(UpdateUserRequest user);
 
     User getByUsername(String username);
 
     UserDetailsService userDetailsService();
 
-    void deleteUsername(String username);
-
-
-    void deleteUser(String email);
-
+    void deleteUser(String username);
+    
     User getCurrentUser();
 
     void getAdmin(String username);
