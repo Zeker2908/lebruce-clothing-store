@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -29,6 +30,7 @@ public class EmailServiceImpl implements EmailService {
     @Value("${app.url}")
     private String appUrl;
 
+    @Async("taskExecutor")
     @Override
     public void sendConfirmationEmail(EmailContext email) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
