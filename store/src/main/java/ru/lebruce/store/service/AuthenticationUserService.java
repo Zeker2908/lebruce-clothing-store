@@ -2,6 +2,7 @@ package ru.lebruce.store.service;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,11 +12,7 @@ import ru.lebruce.store.domain.dto.*;
 import ru.lebruce.store.domain.model.PendingUser;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
-import ru.lebruce.store.exception.EmailNotConfirmException;
-import ru.lebruce.store.exception.TokenExpiredException;
-import ru.lebruce.store.exception.TokenNotFoundException;
-import ru.lebruce.store.exception.UserAlreadyExistsException;
-import ru.lebruce.store.repository.PendingUserRepository;
+import ru.lebruce.store.exception.*;
 
 import java.time.LocalDateTime;
 
@@ -28,18 +25,15 @@ public class AuthenticationUserService {
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
-    private final PendingUserRepository pendingUserRepository;
-
+    private final PendingUserService pendingUserService;
 
     /**
      * Регистрация пользователя
      *
      * @param request данные пользователя
      */
+    @Async("taskExecutor")
     public void signUp(SignUpRequest request) throws MessagingException {
-        if (userService.existsByUsername(request.getUsername()) || pendingUserRepository.existsByUsername(request.getUsername())) {
-            throw new UserAlreadyExistsException("Пользователь с почтой " + request.getUsername() + " уже существует");
-        }
 
         var pendingUser = PendingUser.builder()
                 .username(request.getUsername())
@@ -49,7 +43,7 @@ public class AuthenticationUserService {
                 .build();
 
 
-        pendingUserRepository.save(pendingUser);
+        pendingUserService.create(pendingUser);
         var token = confirmationTokenService.generateToken(pendingUser);
         var emailContext = emailService.confirmEmailContext(pendingUser, token.getToken());
         emailService.sendConfirmationEmail(emailContext);
@@ -63,7 +57,7 @@ public class AuthenticationUserService {
      */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
 
-        if (pendingUserRepository.existsByUsername(request.getUsername())) {
+        if (pendingUserService.existsByUsername(request.getUsername())) {
             throw new EmailNotConfirmException("Подтвердите почту");
         }
 
@@ -101,8 +95,7 @@ public class AuthenticationUserService {
         } else if (userService.existsByUsername(confirmationToken.getUser().getUsername())) {
             throw new UserAlreadyExistsException("Пользователь уже создан");
         }
-        var pendingUser = pendingUserRepository.findByUsername(confirmationToken.getUser().getUsername())
-                .orElseThrow(() -> new RuntimeException("Временный пользователь не найден"));
+        var pendingUser = pendingUserService.findByUsername(confirmationToken.getUser().getUsername());
 
         var user = User.builder()
                 .username(pendingUser.getUsername())
@@ -114,6 +107,14 @@ public class AuthenticationUserService {
 
         userService.create(user);
         confirmationTokenService.deleteToken(token);
+    }
+
+    public void checkUserExistence(String username) {
+        if (userService.existsByUsername(username)) {
+            throw new UserAlreadyExistsException("Пользователь с почтой " + username + " уже существует");
+        } else if (pendingUserService.existsByUsername(username)) {
+            throw new PendingUserAlreadyExistsException("Вам уже отправлено письмо, подтвердите аккаунт");
+        }
     }
 
 

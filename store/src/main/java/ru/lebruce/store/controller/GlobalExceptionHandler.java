@@ -65,4 +65,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleTokenNotFoundException(TokenNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(PendingUserNotFoundException.class)
+    public ResponseEntity<?> handlePendingUserNotFoundException(PendingUserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(PendingUserAlreadyExistsException.class)
+    public ResponseEntity<?> handlePendingUserAlreadyExistsException(PendingUserAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

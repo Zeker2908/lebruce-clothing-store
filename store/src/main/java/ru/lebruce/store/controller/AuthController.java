@@ -6,12 +6,13 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
 import ru.lebruce.store.service.AuthenticationUserService;
+import ru.lebruce.store.service.PendingUserService;
+import ru.lebruce.store.service.UserService;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -19,12 +20,15 @@ import ru.lebruce.store.service.AuthenticationUserService;
 @Tag(name = "Аутентификация")
 public class AuthController {
     private final AuthenticationUserService authenticationService;
+    private final UserService userService;
+    private final PendingUserService pendingUserService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
-    @Async("taskExecutor")
-    public void signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
+        authenticationService.checkUserExistence(request.getUsername());
         authenticationService.signUp(request);
+        return ResponseEntity.ok("На вашу почту " + request.getUsername() + " отправлено письмо");
     }
 
     @Operation(summary = "Авторизация пользователя")
