@@ -27,7 +27,7 @@ public class PendingUserServiceImpl implements PendingUserService {
 
     @Override
     public PendingUser findByUsername(String username) {
-        pendingUserRepository.findByUsername(username).orElseThrow(() -> new PendingUserNotFoundException("Пользователь не найден"));
-        return null;
+        return pendingUserRepository.findByUsername(username).orElseThrow(() ->
+                new PendingUserNotFoundException("Пользователь не найден"));
     }
 }
