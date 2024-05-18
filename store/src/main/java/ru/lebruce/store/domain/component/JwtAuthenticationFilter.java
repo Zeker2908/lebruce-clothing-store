@@ -1,4 +1,5 @@
-package ru.lebruce.store.config;
+package ru.lebruce.store.domain.component;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

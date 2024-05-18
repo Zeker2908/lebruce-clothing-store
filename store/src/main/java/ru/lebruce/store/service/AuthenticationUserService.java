@@ -2,6 +2,7 @@ package ru.lebruce.store.service;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +36,7 @@ public class AuthenticationUserService {
      *
      * @param request данные пользователя
      */
+    @Async("taskExecutor")
     public void signUp(SignUpRequest request) throws MessagingException {
 
         var pendingUser = PendingUser.builder()
