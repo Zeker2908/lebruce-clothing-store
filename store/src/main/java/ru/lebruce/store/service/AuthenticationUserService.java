@@ -2,7 +2,6 @@ package ru.lebruce.store.service;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +14,7 @@ import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.EmailNotConfirmException;
 import ru.lebruce.store.exception.TokenExpiredException;
 import ru.lebruce.store.exception.TokenNotFoundException;
+import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.repository.PendingUserRepository;
 
 import java.time.LocalDateTime;
@@ -36,8 +36,10 @@ public class AuthenticationUserService {
      *
      * @param request данные пользователя
      */
-    @Async("taskExecutor")
     public void signUp(SignUpRequest request) throws MessagingException {
+        if (userService.existsByUsername(request.getUsername()) || pendingUserRepository.existsByUsername(request.getUsername())) {
+            throw new UserAlreadyExistsException("Пользователь с почтой " + request.getUsername() + " уже существует");
+        }
 
         var pendingUser = PendingUser.builder()
                 .username(request.getUsername())
@@ -94,11 +96,11 @@ public class AuthenticationUserService {
     public void confirmEmail(String token) {
         var confirmationToken = confirmationTokenService.getToken(token)
                 .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
-
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Токен истек");
+        } else if (userService.existsByUsername(confirmationToken.getUser().getUsername())) {
+            throw new UserAlreadyExistsException("Пользователь уже создан");
         }
-
         var pendingUser = pendingUserRepository.findByUsername(confirmationToken.getUser().getUsername())
                 .orElseThrow(() -> new RuntimeException("Временный пользователь не найден"));
 

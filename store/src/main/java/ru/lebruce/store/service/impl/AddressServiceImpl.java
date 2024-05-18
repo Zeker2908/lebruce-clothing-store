@@ -1,6 +1,5 @@
 package ru.lebruce.store.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.model.Address;
@@ -48,21 +47,5 @@ public class AddressServiceImpl implements AddressService {
     public void deleteAddress(Long addressId) {
         repository.deleteByAddressId(addressId);
     }
-
-    @Override
-    public void deleteCity(String city) {
-        repository.deleteByCity(city);
-    }
-
-    @Override
-    @Transactional
-    public void deleteCountry(String country) {
-        repository.deleteByCountry(country);
-    }
-
-    @Override
-    @Transactional
-    public void deleteZipCode(String zipCode) {
-        repository.deleteByZipCode(zipCode);
-    }
+    
 }

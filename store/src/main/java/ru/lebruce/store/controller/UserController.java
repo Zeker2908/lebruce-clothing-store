@@ -22,7 +22,8 @@ public class UserController {
         return ResponseEntity.ok(service.findAllUsers());
     }
 
-    @GetMapping("username/{username}")
+
+    @GetMapping("/{username}")
     public ResponseEntity<?> getByUsername(@PathVariable String username) {
         return ResponseEntity.ok(service.getByUsername(username));
     }
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     //@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("get_admin/{username}")
+    @PostMapping("admin/{username}")
     public void getAdmin(@PathVariable String username) {
         service.getAdmin(username);
     }

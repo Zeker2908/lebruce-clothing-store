@@ -20,8 +20,10 @@ public interface UserService {
     UserDetailsService userDetailsService();
 
     void deleteUser(String username);
-    
+
     User getCurrentUser();
 
     void getAdmin(String username);
+
+    boolean existsByUsername(String username);
 }

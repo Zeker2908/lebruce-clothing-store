@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.SignInRequest;
@@ -21,9 +22,9 @@ public class AuthController {
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
+    @Async("taskExecutor")
+    public void signUp(@RequestBody @Valid SignUpRequest request) throws MessagingException {
         authenticationService.signUp(request);
-        return ResponseEntity.ok("На вашу почту " + (request.getUsername()) + " отправлено письмо");
     }
 
     @Operation(summary = "Авторизация пользователя")
