@@ -8,4 +8,6 @@ public interface PendingUserService {
     void create(PendingUser pendingUser);
 
     PendingUser findByUsername(String username);
+
+    void checkUserExistence(String username);
 }

@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailContext confirmEmailContext(PendingUser pendingUser, String confirmationToken) {
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", pendingUser.getFirstName());
-        context.put("verificationURL", appUrl + "api/v1/auth/confirm?token=" + confirmationToken);
+        context.put("verificationURL", appUrl + "api/v1/confirm?token=" + confirmationToken);
         return EmailContext.builder()
                 .from(from)
                 .to(pendingUser.getUsername())

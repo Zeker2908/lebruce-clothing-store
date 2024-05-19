@@ -7,14 +7,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.*;
 import ru.lebruce.store.domain.model.PendingUser;
-import ru.lebruce.store.domain.model.Role;
-import ru.lebruce.store.domain.model.User;
-import ru.lebruce.store.exception.*;
-
-import java.time.LocalDateTime;
+import ru.lebruce.store.exception.EmailNotConfirmException;
 
 @Service
 @RequiredArgsConstructor
@@ -85,37 +80,5 @@ public class AuthenticationUserService {
     public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest) {
         return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
     }
-
-    @Transactional
-    public void confirmEmail(String token) {
-        var confirmationToken = confirmationTokenService.getToken(token)
-                .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
-        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new TokenExpiredException("Токен истек");
-        } else if (userService.existsByUsername(confirmationToken.getUser().getUsername())) {
-            throw new UserAlreadyExistsException("Пользователь уже создан");
-        }
-        var pendingUser = pendingUserService.findByUsername(confirmationToken.getUser().getUsername());
-
-        var user = User.builder()
-                .username(pendingUser.getUsername())
-                .password(pendingUser.getPassword())
-                .role(Role.ROLE_USER)
-                .firstName(pendingUser.getFirstName())
-                .lastName(pendingUser.getLastName())
-                .build();
-
-        userService.create(user);
-        confirmationTokenService.deleteToken(token);
-    }
-
-    public void checkUserExistence(String username) {
-        if (userService.existsByUsername(username)) {
-            throw new UserAlreadyExistsException("Пользователь с почтой " + username + " уже существует");
-        } else if (pendingUserService.existsByUsername(username)) {
-            throw new PendingUserAlreadyExistsException("Вам уже отправлено письмо, подтвердите аккаунт");
-        }
-    }
-
 
 }
