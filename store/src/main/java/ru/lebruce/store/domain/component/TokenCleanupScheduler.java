@@ -14,7 +14,7 @@ import java.util.List;
 public class TokenCleanupScheduler {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
-    @Scheduled(fixedRate = 900000) //каждые 15 минут
+    @Scheduled(fixedRate = 300000) //каждые 5 минут
     public void cleanUpExpiredTokens() {
         List<ConfirmationToken> expiredTokens = confirmationTokenRepository
                 .findAllByExpiresAtBefore(LocalDateTime.now());
