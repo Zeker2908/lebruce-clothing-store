@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import ru.lebruce.store.domain.dto.EmailContext;
 import ru.lebruce.store.domain.model.PendingUser;
+import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.service.EmailService;
 
 import java.nio.charset.StandardCharsets;
@@ -30,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
     private String appUrl;
 
     @Override
-    public void sendConfirmationEmail(EmailContext email) throws MessagingException {
+    public void sendEmail(EmailContext email) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -58,6 +59,21 @@ public class EmailServiceImpl implements EmailService {
                 .email(pendingUser.getUsername())
                 .context(context)
                 .templateLocation("confirmation-email.html")
+                .build();
+    }
+
+    @Override
+    public EmailContext resetPasswordEmailContext(User user, String token) {
+        Map<String, Object> context = new HashMap<>();
+        context.put("firstName", user.getFirstName());
+        context.put("verificationURL", appUrl + "api/v1/password?token=" + token);
+        return EmailContext.builder()
+                .from(from)
+                .to(user.getUsername())
+                .subject("Сброс пароля")
+                .email(user.getUsername())
+                .context(context)
+                .templateLocation("reset-password-mail.html")
                 .build();
     }
 

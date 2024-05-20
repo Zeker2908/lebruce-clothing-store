@@ -20,7 +20,6 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(20);
         executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("SignUpThread-");
         executor.initialize();
         return executor;
     }

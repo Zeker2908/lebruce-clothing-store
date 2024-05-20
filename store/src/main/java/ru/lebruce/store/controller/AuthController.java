@@ -6,15 +6,14 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
+import ru.lebruce.store.domain.dto.SetPasswordRequest;
 import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
-import ru.lebruce.store.service.AuthenticationUserService;
-import ru.lebruce.store.service.PendingUserService;
+import ru.lebruce.store.exception.UserAlreadyExistsException;
+import ru.lebruce.store.service.*;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -23,6 +22,9 @@ import ru.lebruce.store.service.PendingUserService;
 public class AuthController {
     private final AuthenticationUserService authenticationService;
     private final PendingUserService pendingUserService;
+    private final UserService userService;
+    private final PasswordResetService passwordResetService;
+    private final PasswordResetTokenService passwordResetTokenService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
@@ -36,6 +38,23 @@ public class AuthController {
     @PostMapping("/sign-in")
     public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
         return authenticationService.signIn(request);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/password-request")
+    public ResponseEntity<?> resetPassword() throws MessagingException {
+        var user = userService.getCurrentUser();
+        if (passwordResetTokenService.existsByUser(user)) {
+            throw new UserAlreadyExistsException("Вам уже направлено письмо");
+        }
+        authenticationService.resetPasswordRequest(user);
+        return ResponseEntity.ok("На вашу почту отправлено письмо с дальнейшими указаниями");
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid SetPasswordRequest passwordRequest) {
+        passwordResetService.resetPassword(passwordRequest.getToken(), passwordRequest);
+        return ResponseEntity.ok("Ваш пароль был успешно изменен");
     }
 }
 

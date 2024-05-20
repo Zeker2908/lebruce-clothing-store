@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,5 +75,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PendingUserAlreadyExistsException.class)
     public ResponseEntity<?> handlePendingUserAlreadyExistsException(PendingUserAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(TokenInvalidException.class)
+    public ResponseEntity<?> handleTokenInvalidException(TokenInvalidException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неправильный логин или пароль");
     }
 }

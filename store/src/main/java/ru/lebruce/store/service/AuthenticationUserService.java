@@ -7,8 +7,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.domain.dto.*;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
+import ru.lebruce.store.domain.dto.SignInRequest;
+import ru.lebruce.store.domain.dto.SignUpRequest;
+import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.PendingUser;
+import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.EmailNotConfirmException;
 
 @Service
@@ -21,6 +25,8 @@ public class AuthenticationUserService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final PendingUserService pendingUserService;
+    private final PasswordResetTokenService passwordResetTokenService;
+
 
     /**
      * Регистрация пользователя
@@ -41,7 +47,7 @@ public class AuthenticationUserService {
         pendingUserService.create(pendingUser);
         var token = confirmationTokenService.generateToken(pendingUser);
         var emailContext = emailService.confirmEmailContext(pendingUser, token.getToken());
-        emailService.sendConfirmationEmail(emailContext);
+        emailService.sendEmail(emailContext);
     }
 
     /**
@@ -69,13 +75,13 @@ public class AuthenticationUserService {
         return new JwtAuthenticationResponse(jwt);
     }
 
-    //todo Позже реализовать подтверждение через почту
-    public JwtAuthenticationResponse setPassword(SetPasswordRequest passwordRequest) {
-        var user = userService.getCurrentUser();
-        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-        userService.saveUser(user);
-        return new JwtAuthenticationResponse(jwtService.generateToken(user));
+    @Async("taskExecutor")
+    public void resetPasswordRequest(User user) throws MessagingException {
+        var token = passwordResetTokenService.generateToken(user);
+        var emailContext = emailService.resetPasswordEmailContext(user, token.getToken());
+        emailService.sendEmail(emailContext);
     }
+    
 
     public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest) {
         return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));

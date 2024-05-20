@@ -9,24 +9,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "confirmation_tokens")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ConfirmationToken {
+public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tokenId;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String token;
 
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private LocalDateTime expiresAt;
-
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(nullable = false, name = "pending_user_id")
-    private PendingUser user;
-
 }

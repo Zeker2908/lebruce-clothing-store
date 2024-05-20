@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.TokenExpiredException;
-import ru.lebruce.store.exception.TokenNotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +18,7 @@ public class ConfirmationEmailService {
 
     @Transactional
     public void confirmEmail(String token) {
-        var confirmationToken = confirmationTokenService.getToken(token)
-                .orElseThrow(() -> new TokenNotFoundException("Неверный токен"));
+        var confirmationToken = confirmationTokenService.getToken(token);
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Токен истек");
         }
@@ -35,7 +33,7 @@ public class ConfirmationEmailService {
                 .build();
 
         userService.create(user);
-        confirmationTokenService.deleteToken(token);
+        confirmationTokenService.delete(token);
     }
 
 }

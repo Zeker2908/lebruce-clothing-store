@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
-import ru.lebruce.store.domain.dto.SetPasswordRequest;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.service.AuthenticationUserService;
 import ru.lebruce.store.service.UserService;
@@ -32,12 +31,7 @@ public class UserController {
     public ResponseEntity<?> getCurrentUser() {
         return ResponseEntity.ok(service.getCurrentUser());
     }
-
-    @PutMapping("/password")
-    public JwtAuthenticationResponse setPassword(@RequestBody @Valid SetPasswordRequest request) {
-        return authenticationService.setPassword(request);
-    }
-
+    
     @PutMapping()
     public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
         return authenticationService.updateUser(request);
