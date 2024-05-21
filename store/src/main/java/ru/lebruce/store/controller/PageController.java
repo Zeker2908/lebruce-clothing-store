@@ -11,7 +11,7 @@ import ru.lebruce.store.service.ConfirmationEmailService;
 import ru.lebruce.store.service.PasswordResetTokenService;
 
 @Controller
-@RequestMapping("/api/v1/page")
+@RequestMapping
 @RequiredArgsConstructor
 public class PageController {
     private final ConfirmationEmailService confirmationEmailService;
