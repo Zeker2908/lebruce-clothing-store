@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailContext confirmEmailContext(PendingUser pendingUser, String confirmationToken) {
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", pendingUser.getFirstName());
-        context.put("verificationURL", appUrl + "api/v1/confirm?token=" + confirmationToken);
+        context.put("verificationURL", appUrl + "api/v1/page/confirm?token=" + confirmationToken);
         return EmailContext.builder()
                 .from(from)
                 .to(pendingUser.getUsername())
@@ -66,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailContext resetPasswordEmailContext(User user, String token) {
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", user.getFirstName());
-        context.put("verificationURL", appUrl + "api/v1/password?token=" + token);
+        context.put("verificationURL", appUrl + "api/v1/page/password?token=" + token);
         return EmailContext.builder()
                 .from(from)
                 .to(user.getUsername())
