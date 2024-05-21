@@ -1,6 +1,7 @@
 package ru.lebruce.store.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.User;
 
@@ -14,6 +15,8 @@ public interface UserService {
     User create(User user);
 
     User updateUser(UpdateUserRequest user);
+
+    JwtAuthenticationResponse updatedUser(UpdateUserRequest userRequest);
 
     User getByUsername(String username);
 

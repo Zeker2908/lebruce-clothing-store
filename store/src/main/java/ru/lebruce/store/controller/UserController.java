@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
@@ -31,10 +32,11 @@ public class UserController {
     public ResponseEntity<?> getCurrentUser() {
         return ResponseEntity.ok(service.getCurrentUser());
     }
-    
-    @PutMapping()
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping
     public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
-        return authenticationService.updateUser(request);
+        return service.updatedUser(request);
     }
 
     @DeleteMapping("/{username}")

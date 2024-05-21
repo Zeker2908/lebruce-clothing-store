@@ -1,6 +1,8 @@
 package ru.lebruce.store.service;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ public class PasswordResetService {
     private final PasswordResetTokenService passwordResetTokenService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Transactional
     public void resetPassword(String token, SetPasswordRequest passwordRequest) {
@@ -24,5 +27,12 @@ public class PasswordResetService {
         userService.saveUser(user);
 
         passwordResetTokenService.delete(passwordResetToken);
+    }
+
+    @Async("taskExecutor")
+    public void resetPasswordRequest(User user) throws MessagingException {
+        var token = passwordResetTokenService.generateToken(user);
+        var emailContext = emailService.resetPasswordEmailContext(user, token.getToken());
+        emailService.sendEmail(emailContext);
     }
 }

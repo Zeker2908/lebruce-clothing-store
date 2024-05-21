@@ -9,12 +9,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.exception.UserNotFoundException;
 import ru.lebruce.store.repository.UserRepository;
+import ru.lebruce.store.service.JwtService;
 import ru.lebruce.store.service.UserService;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден";
 
     private final UserRepository repository;
+    private final JwtService jwtService;
 
 
     @Override
@@ -63,6 +66,11 @@ public class UserServiceImpl implements UserService {
 
 
         return repository.save(user);
+    }
+
+    @Override
+    public JwtAuthenticationResponse updatedUser(UpdateUserRequest userRequest) {
+        return new JwtAuthenticationResponse(jwtService.generateToken(updateUser(userRequest)));
     }
 
     @Override

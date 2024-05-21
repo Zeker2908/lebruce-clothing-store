@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
-import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.PendingUser;
-import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.EmailNotConfirmException;
 
 @Service
@@ -73,18 +71,6 @@ public class AuthenticationUserService {
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
-    }
-
-    @Async("taskExecutor")
-    public void resetPasswordRequest(User user) throws MessagingException {
-        var token = passwordResetTokenService.generateToken(user);
-        var emailContext = emailService.resetPasswordEmailContext(user, token.getToken());
-        emailService.sendEmail(emailContext);
-    }
-    
-
-    public JwtAuthenticationResponse updateUser(UpdateUserRequest userRequest) {
-        return new JwtAuthenticationResponse(jwtService.generateToken(userService.updateUser(userRequest)));
     }
 
 }
