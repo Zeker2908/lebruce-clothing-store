@@ -2,14 +2,12 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.domain.dto.CreateProductRequest;
+import ru.lebruce.store.domain.dto.ProductRequest;
+import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.exception.CategoryNotFoundException;
 import ru.lebruce.store.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.exception.ProductNotFoundException;
-import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.repository.CategoryRepository;
 import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.repository.ReviewRepository;
@@ -39,9 +37,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(CreateProductRequest productRequest) {
+    public Product createProduct(ProductRequest productRequest) {
         if (repository.existsByProductNameAndBrandAndCategory(productRequest.getProductName(), productRequest.getBrand(),
-                categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(()->
+                categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(() ->
                         new CategoryNotFoundException("Данной категории не существует")))) {
             throw new ProductAlreadyExistsException(PRODUCT_ALREADY_EXISTS_MESSAGE);
         }
@@ -49,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
         var product = Product.builder()
                 .productName(productRequest.getProductName())
                 .brand(productRequest.getBrand())
-                .category(categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(()->
+                .category(categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(() ->
                         new CategoryNotFoundException("Данной категории не существует")))
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())

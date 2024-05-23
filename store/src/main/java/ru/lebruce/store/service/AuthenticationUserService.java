@@ -23,7 +23,6 @@ public class AuthenticationUserService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
     private final PendingUserService pendingUserService;
-    private final PasswordResetTokenService passwordResetTokenService;
 
 
     /**

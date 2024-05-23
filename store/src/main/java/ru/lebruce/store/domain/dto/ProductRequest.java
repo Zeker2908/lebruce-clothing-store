@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CreateProductRequest {
+public class ProductRequest {
     private Long productId;
 
     @NotEmpty(message = "Наименование продукта не должно быть пустым")

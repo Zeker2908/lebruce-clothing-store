@@ -3,7 +3,7 @@ package ru.lebruce.store.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.lebruce.store.domain.dto.CreateReviewRequest;
+import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.exception.ProductNotFoundException;
 import ru.lebruce.store.exception.ReviewAlreadyExists;
 import ru.lebruce.store.exception.UserNotFoundException;
@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(CreateReviewRequest reviewRequest) {
+    public Review createReview(ReviewRequest reviewRequest) {
         if (doesReviewExistForProductAndUser(reviewRequest.getProductId(), reviewRequest.getUserId())) {
             throw new ReviewAlreadyExists("Отзыв пользователя уже существует");
         }

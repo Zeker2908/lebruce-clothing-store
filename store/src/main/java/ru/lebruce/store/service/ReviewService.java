@@ -1,6 +1,6 @@
 package ru.lebruce.store.service;
 
-import ru.lebruce.store.domain.dto.CreateReviewRequest;
+import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 
 import java.util.List;
@@ -10,5 +10,5 @@ public interface ReviewService {
     Review saveReview(Review review);
     Review updateReview(Review review);
     void deleteReview(Long reviewId);
-    Review createReview(CreateReviewRequest reviewRequest);
+    Review createReview(ReviewRequest reviewRequest);
 }

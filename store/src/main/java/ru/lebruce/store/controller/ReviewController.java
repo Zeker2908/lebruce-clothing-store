@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.dto.CreateReviewRequest;
+import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.service.ReviewService;
 
@@ -22,7 +22,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createReview(@RequestBody @Valid CreateReviewRequest review) {
+    public ResponseEntity<?> createReview(@RequestBody @Valid ReviewRequest review) {
         return ResponseEntity.ok(service.createReview(review));
     }
 }

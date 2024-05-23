@@ -17,14 +17,14 @@ public class TokenCleanupScheduler {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @Scheduled(fixedRate = 300000) //каждые 5 минут
+    @Scheduled(fixedRate = 60000)
     public void cleanUpExpiredConfirmTokens() {
         List<ConfirmationToken> expiredTokens = confirmationTokenRepository
                 .findAllByExpiresAtBefore(LocalDateTime.now());
         confirmationTokenRepository.deleteAll(expiredTokens);
     }
 
-    @Scheduled(fixedRate = 1800000) //каждые 30 минут
+    @Scheduled(fixedRate = 60000)
     public void cleanUpExpiredPasswordTokens() {
         List<PasswordResetToken> expiredTokens = passwordResetTokenRepository
                 .findAllByExpiresAtBefore(LocalDateTime.now());
