@@ -23,6 +23,13 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<?> createReview(@RequestBody @Valid ReviewRequest review) {
-        return ResponseEntity.ok(service.createReview(review));
+        service.createReview(review);
+        return ResponseEntity.ok("Отзыв успешно оставлен");
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
+        service.deleteReview(id);
+        return ResponseEntity.ok("Отзыв успешно удален");
     }
 }

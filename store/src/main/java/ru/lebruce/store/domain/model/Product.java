@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -48,5 +49,9 @@ public class Product {
     @Size(min = 1, max = 10)
     private List<String> imageUrls;
 
-    private Double averageRating;
+    @Formula("(SELECT AVG(r.rating) FROM reviews r WHERE r.product_id = product_id)")
+    private Double rating;
+
+    @Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
+    private Long reviewCount;
 }

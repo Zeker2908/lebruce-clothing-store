@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
      * @return пользователь
      */
 
+    //todo реализовать смену почты, через подтверждение почты
     @Override
     public User updateUser(UpdateUserRequest userRequest) {
         User user = getCurrentUser();

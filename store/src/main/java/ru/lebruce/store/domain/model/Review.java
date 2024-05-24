@@ -20,11 +20,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -38,7 +38,7 @@ public class Review {
     private LocalDateTime datePosted;
 
     @PrePersist
-    protected void onCreate() {
+    private void onCreate() {
         datePosted = LocalDateTime.now();
     }
 }

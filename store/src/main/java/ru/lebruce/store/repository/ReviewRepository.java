@@ -16,5 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r WHERE r.product.productId = :productId AND r.user.userId = :userId")
     Optional<Review> findByProductIdAndUserId(@Param("productId") Long productId, @Param("userId") Long userId);
 
+    Review findByReviewId(Long reviewId);
+
     void deleteByReviewId(Long reviewId);
 }

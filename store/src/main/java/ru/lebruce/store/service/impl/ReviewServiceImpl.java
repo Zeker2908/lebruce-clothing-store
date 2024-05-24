@@ -11,7 +11,6 @@ import ru.lebruce.store.exception.UserNotFoundException;
 import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.repository.ReviewRepository;
 import ru.lebruce.store.repository.UserRepository;
-import ru.lebruce.store.service.ProductService;
 import ru.lebruce.store.service.ReviewService;
 
 import java.util.List;
@@ -22,7 +21,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository repository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final ProductService productService;
 
     @Override
     public List<Review> findAll() {
@@ -46,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(ReviewRequest reviewRequest) {
+    public void createReview(ReviewRequest reviewRequest) {
         if (doesReviewExistForProductAndUser(reviewRequest.getProductId(), reviewRequest.getUserId())) {
             throw new ReviewAlreadyExists("Отзыв пользователя уже существует");
         }
@@ -57,9 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .rating(reviewRequest.getRating())
                 .comment(reviewRequest.getComment())
                 .build();
-        productService.getAverageRatingForProduct(review.getProduct().getProductId());
-        return repository.save(review);
-
+        repository.save(review);
     }
 
     private boolean doesReviewExistForProductAndUser(Long productId, Long userId) {

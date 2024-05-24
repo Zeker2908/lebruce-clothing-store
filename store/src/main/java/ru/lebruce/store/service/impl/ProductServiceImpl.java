@@ -89,15 +89,4 @@ public class ProductServiceImpl implements ProductService {
         repository.deleteByProductName(productName);
     }
 
-    @Transactional
-    @Override
-    public Double getAverageRatingForProduct(Long productId) {
-        if (!repository.existsByProductId(productId)) {
-            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, productId));
-        }
-        Double averageRating = reviewRepository.findAverageRatingByProductId(productId);
-        repository.updateAverageRating(productId, averageRating);
-        return averageRating;
-    }
-
 }
