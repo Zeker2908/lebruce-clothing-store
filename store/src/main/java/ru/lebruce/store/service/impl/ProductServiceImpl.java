@@ -2,6 +2,10 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
@@ -13,8 +17,6 @@ import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.repository.ReviewRepository;
 import ru.lebruce.store.service.ProductService;
 
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -25,15 +27,13 @@ public class ProductServiceImpl implements ProductService {
     private static final String PRODUCT_NOT_FOUND = "Товар с названием %s не найден";
     private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
 
-    @Override
-    public List<Product> findAllProducts() {
-        return repository.findAll();
+    public Page<Product> findAllProducts(int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findAll(pageable);
     }
 
-    @Override
     public Product getByProductName(String productName) {
-        return repository.findByProductName(productName)
-                .orElseThrow(() -> new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, productName)));
+        return repository.findByProductName(productName).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
     }
 
     @Override
@@ -89,11 +89,15 @@ public class ProductServiceImpl implements ProductService {
         repository.deleteByProductName(productName);
     }
 
+    @Transactional
     @Override
     public Double getAverageRatingForProduct(Long productId) {
         if (!repository.existsByProductId(productId)) {
             throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, productId));
         }
-        return reviewRepository.findAverageRatingByProductId(productId);
+        Double averageRating = reviewRepository.findAverageRatingByProductId(productId);
+        repository.updateAverageRating(productId, averageRating);
+        return averageRating;
     }
+
 }

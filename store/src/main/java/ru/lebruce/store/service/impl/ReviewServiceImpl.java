@@ -4,13 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.ReviewRequest;
+import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.exception.ProductNotFoundException;
 import ru.lebruce.store.exception.ReviewAlreadyExists;
 import ru.lebruce.store.exception.UserNotFoundException;
-import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.repository.ReviewRepository;
 import ru.lebruce.store.repository.UserRepository;
+import ru.lebruce.store.service.ProductService;
 import ru.lebruce.store.service.ReviewService;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository repository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final ProductService productService;
 
     @Override
     public List<Review> findAll() {
@@ -55,7 +57,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .rating(reviewRequest.getRating())
                 .comment(reviewRequest.getComment())
                 .build();
-
+        productService.getAverageRatingForProduct(review.getProduct().getProductId());
         return repository.save(review);
 
     }

@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.ProductRequest;
@@ -16,9 +17,13 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public ResponseEntity<?> findAllProducts() {
-        return ResponseEntity.ok(service.findAllProducts());
+    public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size,
+                                             @RequestParam(defaultValue = "productId,asc") String[] sort) {
+        Page<Product> productPage = service.findAllProducts(page, size, sort);
+        return ResponseEntity.ok(productPage);
     }
+
 
     @GetMapping("/{productName}")
     public ResponseEntity<?> findByProductName(@PathVariable String productName) {

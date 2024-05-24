@@ -47,4 +47,6 @@ public class Product {
     @Column(nullable = false)
     @Size(min = 1, max = 10)
     private List<String> imageUrls;
+
+    private Double averageRating;
 }

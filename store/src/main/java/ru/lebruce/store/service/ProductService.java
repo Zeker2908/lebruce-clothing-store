@@ -1,13 +1,12 @@
 package ru.lebruce.store.service;
 
+import org.springframework.data.domain.Page;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
 
-import java.util.List;
-
 public interface ProductService {
 
-    List<Product> findAllProducts();
+    Page<Product> findAllProducts(int page, int size, String[] sort);
 
     Product getByProductName(String productName);
 
