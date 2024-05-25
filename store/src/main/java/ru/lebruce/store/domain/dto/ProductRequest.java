@@ -6,8 +6,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class ProductRequest {
     private Long productId;
@@ -29,7 +27,4 @@ public class ProductRequest {
 
     @PositiveOrZero(message = "Доступное количество продукта должно быть неотрицательным")
     private int availableQuantity;
-
-    @Size(min = 1, max = 10, message = "Количество URL-адресов изображений должно быть от 1 до 10")
-    private List<String> imageUrls;
 }

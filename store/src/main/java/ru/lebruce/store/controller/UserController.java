@@ -39,6 +39,7 @@ public class UserController {
         return service.updatedUser(request);
     }
 
+    //todo решить проблему удаления
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteUsername(@PathVariable String username) {
         service.deleteUser(username);

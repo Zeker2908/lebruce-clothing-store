@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.service.ProductService;
@@ -31,15 +32,15 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductRequest product) {
-        return ResponseEntity.ok(service.createProduct(product));
+    public ResponseEntity<?> createProduct(@Valid ProductRequest productRequest, @RequestParam MultipartFile[] images) {
+        return ResponseEntity.ok(service.createProduct(productRequest, images));
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody @Valid Product product) {
-        product.setProductId(productId);
+    @PutMapping
+    public ResponseEntity<?> updateProduct(@RequestBody @Valid Product product) {
         return ResponseEntity.ok(service.updateProduct(product));
     }
+
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {

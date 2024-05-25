@@ -1,8 +1,11 @@
 package ru.lebruce.store.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
+
+import java.io.IOException;
 
 public interface ProductService {
 
@@ -14,10 +17,13 @@ public interface ProductService {
 
     Product updateProduct(Product product);
 
-    Product createProduct(ProductRequest product);
-    
+    Product createProduct(ProductRequest product, MultipartFile[] files);
+
+    void uploadImages(Product product, MultipartFile[] files);
+
     void deleteProduct(Long productId);
 
     void deleteProduct(String productName);
 
+    Object saveImageAndGetUrl(MultipartFile multipartFile, Product product) throws IOException;
 }

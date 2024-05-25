@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
     private String from;
 
     @Value("${app.url}")
-    private String appUrl;
+    static String APP_URL;
 
     @Override
     public void sendEmail(EmailContext email) throws MessagingException {
@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailContext confirmEmailContext(PendingUser pendingUser, String confirmationToken) {
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", pendingUser.getFirstName());
-        context.put("verificationURL", appUrl + "confirm?token=" + confirmationToken);
+        context.put("verificationURL", APP_URL + "confirm?token=" + confirmationToken);
         return EmailContext.builder()
                 .from(from)
                 .to(pendingUser.getUsername())
@@ -66,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
     public EmailContext resetPasswordEmailContext(User user, String token) {
         Map<String, Object> context = new HashMap<>();
         context.put("firstName", user.getFirstName());
-        context.put("verificationURL", appUrl + "password?token=" + token);
+        context.put("verificationURL", APP_URL + "password?token=" + token);
         return EmailContext.builder()
                 .from(from)
                 .to(user.getUsername())

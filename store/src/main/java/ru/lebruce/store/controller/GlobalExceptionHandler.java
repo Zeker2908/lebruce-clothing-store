@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MailException.class)
-    public ResponseEntity<?> handleMailException(MailException ex) {
+    public ResponseEntity<?> handleMailException() {
         return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -83,7 +83,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex) {
+    public ResponseEntity<?> handleBadCredentialsException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неправильный логин или пароль");
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
