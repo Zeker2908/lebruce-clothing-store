@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface ProductService {
 
@@ -19,11 +19,9 @@ public interface ProductService {
 
     Product createProduct(ProductRequest product, MultipartFile[] files);
 
-    void uploadImages(Product product, MultipartFile[] files);
+    List<String> uploadImages(MultipartFile[] files);
 
     void deleteProduct(Long productId);
 
     void deleteProduct(String productName);
-
-    Object saveImageAndGetUrl(MultipartFile multipartFile, Product product) throws IOException;
 }

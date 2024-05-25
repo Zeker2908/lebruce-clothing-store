@@ -64,29 +64,28 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())
                 .availableQuantity(productRequest.getAvailableQuantity())
+                .imageUrls(uploadImages(images))
                 .build();
-
-        uploadImages(product, images);
 
         return saveProduct(product);
     }
 
     @SneakyThrows
     @Override
-    public void uploadImages(Product product, MultipartFile[] images) {
+    public List<String> uploadImages(MultipartFile[] images) {
         if (images.length > 10) {
             throw new IllegalArgumentException("Количество фотографий больше 10");
         }
-        List<String> imageUrls = Arrays.stream(images)
+
+        return Arrays.stream(images)
                 .map(image -> {
                     try {
-                        return saveImageAndGetUrl(image, product);
+                        return saveImageAndGetUrl(image);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 })
                 .collect(Collectors.toList());
-        product.setImageUrls(imageUrls);
     }
 
     @Override
@@ -120,8 +119,7 @@ public class ProductServiceImpl implements ProductService {
         repository.deleteByProductName(productName);
     }
 
-    @Override
-    public String saveImageAndGetUrl(MultipartFile image, Product product) throws IOException {
+    private String saveImageAndGetUrl(MultipartFile image) throws IOException {
         Path imageDirectory = Paths.get("var/www/lebruce.ru/product-images");
         if (!Files.exists(imageDirectory)) {
             Files.createDirectories(imageDirectory);
