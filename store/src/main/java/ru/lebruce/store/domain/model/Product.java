@@ -1,5 +1,6 @@
 package ru.lebruce.store.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -54,4 +55,8 @@ public class Product {
 
     @Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
     private Long reviewCount;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Review> reviews;
 }
