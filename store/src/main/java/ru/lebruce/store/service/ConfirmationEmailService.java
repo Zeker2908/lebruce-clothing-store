@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Role;
+import ru.lebruce.store.domain.model.ShoppingCart;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.TokenExpiredException;
 
@@ -15,6 +16,7 @@ public class ConfirmationEmailService {
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
     private final PendingUserService pendingUserService;
+    private final ShoppingCartService shoppingCartService;
 
     @Transactional
     public void confirmEmail(String token) {
@@ -31,8 +33,13 @@ public class ConfirmationEmailService {
                 .firstName(pendingUser.getFirstName())
                 .lastName(pendingUser.getLastName())
                 .build();
-
         userService.create(user);
+
+        var cart = ShoppingCart.builder()
+                .user(user)
+                .build();
+        shoppingCartService.create(cart);
+
         confirmationTokenService.delete(token);
     }
 

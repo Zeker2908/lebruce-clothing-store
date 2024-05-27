@@ -13,6 +13,8 @@ public interface ProductService {
 
     Product getByProductName(String productName);
 
+    Product getByProductId(Long productId);
+
     Product saveProduct(Product product);
 
     Product updateProduct(Product product);

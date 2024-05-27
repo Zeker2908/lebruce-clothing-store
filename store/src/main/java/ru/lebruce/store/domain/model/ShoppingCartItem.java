@@ -1,5 +1,6 @@
 package ru.lebruce.store.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class ShoppingCartItem {
 
     @ManyToOne
     @JoinColumn(name = "shopping_cart_id")
+    @JsonIgnore
     private ShoppingCart shoppingCart;
 
     @Column(nullable = false)
@@ -35,6 +37,6 @@ public class ShoppingCartItem {
 
     @Formula("(select p.price * quantity from products p where p.product_id = product_id)")
     private double totalPrice;
-    
+
     //todo добавить проверку на наличие товара и сделать поле активна карта или нет
 }

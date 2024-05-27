@@ -39,13 +39,20 @@ public class ProductServiceImpl implements ProductService {
     private static final String PRODUCT_NOT_FOUND = "Товар с названием %s не найден";
     private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
 
+    @Override
     public Page<Product> findAllProducts(int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
         return repository.findAll(pageable);
     }
 
+    @Override
     public Product getByProductName(String productName) {
         return repository.findByProductName(productName).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
+    }
+
+    @Override
+    public Product getByProductId(Long productId) {
+        return repository.findByProductId(productId).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.lebruce.store.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +21,18 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shoppingCartId;
 
+    //todo убрать JsonIgnore и сделать DTO, чтобы выводило только нужную информацию о корзине
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShoppingCartItem> items;
 
-    @Formula("(select sum(sci.total_price) from shopping_cart_items sci where sci.shopping_cart_id = shopping_cart_id)")
+    @Formula("(select sum(p.price * sci.quantity) from products p, shopping_cart_items sci where sci.product_id = p.product_id and sci.shopping_cart_id = shopping_cart_id)")
     private Double totalPrice;
 
     @Formula("(select count(*) from shopping_cart_items sci where sci.shopping_cart_id = shopping_cart_id)")
-    private Integer count;
+    private Integer quantityOfPosition;
 }
