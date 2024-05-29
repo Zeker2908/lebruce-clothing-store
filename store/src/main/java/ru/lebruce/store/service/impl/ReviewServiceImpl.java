@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void createReview(ReviewRequest reviewRequest) {
-        if (doesReviewExistForProductAndUser(reviewRequest.getProductId(), reviewRequest.getUserId())) {
+        if (doesReviewExistForProductAndUser(reviewRequest.getProductId(), userService.getCurrentUser().getUserId())) {
             throw new ReviewAlreadyExists("Отзыв пользователя уже существует");
         }
 
