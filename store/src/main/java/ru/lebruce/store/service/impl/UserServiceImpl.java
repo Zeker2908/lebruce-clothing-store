@@ -53,11 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(UpdateUserRequest userRequest) {
         User user = getCurrentUser();
-
-        Optional.ofNullable(userRequest.getUsername())
-                .filter(username -> !username.isEmpty())
-                .filter(username -> !repository.existsByUsername(username))
-                .ifPresent(user::setUsername);
+        
         Optional.ofNullable(userRequest.getFirstName())
                 .filter(firstName -> !firstName.isEmpty())
                 .ifPresent(user::setFirstName);

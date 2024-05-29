@@ -25,8 +25,14 @@ public class ShoppingCartController {
         shoppingCartItemService.create(shoppingCartItemRequest);
     }
 
-    @DeleteMapping("item/{shoppingCartItemId}")
-    public void deleteShoppingCartItem(@PathVariable Long shoppingCartItemId) {
-        shoppingCartItemService.delete(shoppingCartItemId);
+    @PutMapping("/item/{id}/{quantity}")
+    public void updateQuantity(@PathVariable Long id, @PathVariable int quantity) {
+        shoppingCartItemService.updateQuantity(id, quantity);
+    }
+
+
+    @DeleteMapping("item/{id}")
+    public void deleteShoppingCartItem(@PathVariable Long id) {
+        shoppingCartItemService.delete(id);
     }
 }

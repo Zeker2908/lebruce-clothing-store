@@ -8,8 +8,8 @@ public interface ShoppingCartItemService {
 
     ShoppingCartItem create(ShoppingCartItemRequest shoppingCartItem);
 
-    ShoppingCartItem update(ShoppingCartItem shoppingCartItem);
-    
     @Transactional
     void delete(Long shoppingCartItemId);
+
+    ShoppingCartItem updateQuantity(Long shoppingCartItemId, int quantityChange);
 }

@@ -91,4 +91,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ShoppingCartItemAlreadyExists.class)
+    public ResponseEntity<?> handleShoppingCartItemAlreadyExists(ShoppingCartItemAlreadyExists ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
