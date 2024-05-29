@@ -1,0 +1,55 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Смена почты</title>
+</head>
+<body>
+<input type="hidden" id="token" name="token" value="${token}">
+<script>
+    function setUsername() {
+        const tokenInput = document.getElementById('token');
+        const token = tokenInput.value;
+        console.log(token);
+
+        fetch('/api/v1/users/username', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({token: token})
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Ваша почта успешно изменена');
+                    window.close();
+                } else {
+                    throw new Error('Ошибка при изменении имени пользователя');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Произошла ошибка при изменении имени пользователя');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            document.getElementById('token').value = token;
+        } else {
+            showToast('Отсутствует токен для смены пароля.', 'alert-danger');
+            document.getElementById('resetPasswordForm').style.display = 'none';
+        }
+    });
+
+    window.onload = function () {
+        setUsername();
+        localStorage.removeItem('token');
+    }
+</script>
+</body>
+</html>

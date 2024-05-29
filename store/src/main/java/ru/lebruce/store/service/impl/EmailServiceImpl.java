@@ -77,4 +77,20 @@ public class EmailServiceImpl implements EmailService {
                 .build();
     }
 
+    @Override
+    public EmailContext setUsernmaeEmailContext(User user, String token, String newEmail) {
+        Map<String, Object> context = new HashMap<>();
+        context.put("firstName", user.getFirstName());
+        context.put("verificationURL", appUrl + "username?token=" + token);
+        context.put("email", newEmail);
+        return EmailContext.builder()
+                .from(from)
+                .to(user.getUsername())
+                .subject("Изменение почты")
+                .email(user.getUsername())
+                .context(context)
+                .templateLocation("set-username-mail.html")
+                .build();
+    }
+
 }

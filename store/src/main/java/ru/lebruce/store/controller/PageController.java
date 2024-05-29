@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.lebruce.store.domain.model.PasswordResetToken;
+import ru.lebruce.store.domain.model.SetUsernameToken;
 import ru.lebruce.store.service.ConfirmationEmailService;
 import ru.lebruce.store.service.PasswordResetTokenService;
+import ru.lebruce.store.service.SetUsernameTokenService;
 
 @Controller
 @RequestMapping
@@ -16,6 +18,7 @@ import ru.lebruce.store.service.PasswordResetTokenService;
 public class PageController {
     private final ConfirmationEmailService confirmationEmailService;
     private final PasswordResetTokenService passwordResetTokenService;
+    private final SetUsernameTokenService setUsernameTokenService;
 
     @GetMapping("/confirm")
     public String confirmEmail(@RequestParam String token, Model model) {
@@ -29,5 +32,13 @@ public class PageController {
         passwordResetTokenService.expires(passwordResetToken);
         model.addAttribute("token", token);
         return "reset-password";
+    }
+
+    @GetMapping("/username")
+    public String setUsernamePage(@RequestParam String token, Model model) {
+        SetUsernameToken setUsernameToken = setUsernameTokenService.getToken(token);
+        setUsernameTokenService.expires(setUsernameToken);
+        model.addAttribute("token", token);
+        return "set-username";
     }
 }

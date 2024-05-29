@@ -7,6 +7,7 @@ import ru.lebruce.store.domain.model.ConfirmationToken;
 import ru.lebruce.store.domain.model.PasswordResetToken;
 import ru.lebruce.store.repository.ConfirmationTokenRepository;
 import ru.lebruce.store.repository.PasswordResetTokenRepository;
+import ru.lebruce.store.repository.SetUsernameTokenRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class TokenCleanupScheduler {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final SetUsernameTokenRepository setUsernameTokenRepository;
 
     @Scheduled(fixedRate = 60000)
     public void cleanUpExpiredConfirmTokens() {
@@ -30,4 +32,5 @@ public class TokenCleanupScheduler {
                 .findAllByExpiresAtBefore(LocalDateTime.now());
         passwordResetTokenRepository.deleteAll(expiredTokens);
     }
+
 }

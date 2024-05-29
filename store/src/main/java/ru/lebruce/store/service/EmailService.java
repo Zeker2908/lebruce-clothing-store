@@ -12,4 +12,6 @@ public interface EmailService {
 
     EmailContext resetPasswordEmailContext(User user, String token);
 
+    EmailContext setUsernmaeEmailContext(User user, String token, String newEmail);
+
 }

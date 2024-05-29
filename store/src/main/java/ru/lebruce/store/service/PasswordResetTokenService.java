@@ -48,7 +48,6 @@ public class PasswordResetTokenService {
 
     @Transactional
     public void delete(PasswordResetToken token) {
-        getToken(token.getToken());
         tokenRepository.delete(token);
     }
 
