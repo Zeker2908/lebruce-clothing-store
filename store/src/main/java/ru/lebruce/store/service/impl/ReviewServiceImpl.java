@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.exception.ReviewAlreadyExists;
-import ru.lebruce.store.exception.UserNotFoundException;
 import ru.lebruce.store.repository.ReviewRepository;
-import ru.lebruce.store.repository.UserRepository;
 import ru.lebruce.store.service.ProductService;
 import ru.lebruce.store.service.ReviewService;
+import ru.lebruce.store.service.UserService;
 
 import java.util.List;
 
@@ -18,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository repository;
-    private final UserRepository userRepository;
     private final ProductService productService;
+    private final UserService userService;
 
     @Override
     public List<Review> findAll() {
@@ -50,7 +49,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         var review = Review.builder()
                 .product(productService.getByProductId(reviewRequest.getProductId()))
-                .user(userRepository.findByUserId(reviewRequest.getUserId()).orElseThrow(() -> new UserNotFoundException("Пользователь не найден")))
+                .user(userService.getCurrentUser())
                 .rating(reviewRequest.getRating())
                 .comment(reviewRequest.getComment())
                 .build();
