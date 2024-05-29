@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@Valid ProductRequest productRequest, @RequestParam MultipartFile[] images) {
+    public ResponseEntity<?> createProduct(@Valid ProductRequest productRequest, @RequestPart MultipartFile[] images) {
         return ResponseEntity.ok(service.createProduct(productRequest, images));
     }
 

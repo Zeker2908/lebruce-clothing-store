@@ -25,8 +25,8 @@ public class ShoppingCartController {
         shoppingCartItemService.create(shoppingCartItemRequest);
     }
 
-    @DeleteMapping("/item")
-    public void deleteShoppingCartItem(@RequestBody Long shoppingCartItemId) {
+    @DeleteMapping("item/{shoppingCartItemId}")
+    public void deleteShoppingCartItem(@PathVariable Long shoppingCartItemId) {
         shoppingCartItemService.delete(shoppingCartItemId);
     }
 }
