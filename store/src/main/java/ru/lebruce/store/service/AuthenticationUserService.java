@@ -78,12 +78,10 @@ public class AuthenticationUserService {
     public JwtAuthenticationResponse refreshToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization").substring("Bearer ".length());
         String username = jwtService.extractUserName(token);
-        if (username == null || !jwtService.isTokenValidUser(token, userService.userDetailsService().loadUserByUsername(username))) {
+        if (username == null || !jwtService.isTokenValid(token, userService.userDetailsService().loadUserByUsername(username))) {
             throw new TokenInvalidException("Invalid token");
         }
-        if (jwtService.isTokenExpired(token)) {
-            token = jwtService.generateToken(userService.userDetailsService().loadUserByUsername(username));
-        }
+        token = jwtService.generateToken(userService.userDetailsService().loadUserByUsername(username));
         return new JwtAuthenticationResponse(token);
     }
 
