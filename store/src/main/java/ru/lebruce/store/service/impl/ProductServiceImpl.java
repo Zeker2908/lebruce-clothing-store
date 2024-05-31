@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findByCategoryName(categoryName, pageable);
+    }
+
+    @Override
     public Product getByProductName(String productName) {
         return repository.findByProductName(productName).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
     }

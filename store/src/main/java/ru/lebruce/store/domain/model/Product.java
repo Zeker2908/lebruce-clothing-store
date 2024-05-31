@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -58,13 +59,13 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Characteristic> characteristics;
+    private Set<Characteristic> characteristics;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<ShoppingCartItem> shoppingCartItems;
+    private Set<ShoppingCartItem> shoppingCartItems;
 }

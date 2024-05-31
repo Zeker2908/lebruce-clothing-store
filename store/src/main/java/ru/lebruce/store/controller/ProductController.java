@@ -25,6 +25,14 @@ public class ProductController {
         return ResponseEntity.ok(productPage);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<?> findAllProductsByCategory(@RequestParam String categoryName,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size,
+                                                       @RequestParam(defaultValue = "productId,asc") String[] sort) {
+        Page<Product> productPage = service.findAllProductsByCategory(categoryName, page, size, sort);
+        return ResponseEntity.ok(productPage);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findByProductName(@PathVariable Long id) {

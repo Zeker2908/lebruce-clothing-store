@@ -11,6 +11,8 @@ public interface ProductService {
 
     Page<Product> findAllProducts(int page, int size, String[] sort);
 
+    Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort);
+
     Product getByProductName(String productName);
 
     Product getByProductId(Long productId);
