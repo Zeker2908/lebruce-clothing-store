@@ -1,10 +1,12 @@
 package ru.lebruce.store.service;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
@@ -12,6 +14,7 @@ import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
 import ru.lebruce.store.domain.model.PendingUser;
 import ru.lebruce.store.exception.EmailNotConfirmException;
+import ru.lebruce.store.exception.TokenInvalidException;
 
 @Service
 @RequiredArgsConstructor
@@ -64,12 +67,25 @@ public class AuthenticationUserService {
                 request.getPassword()
         ));
 
-        var user = userService
+        UserDetails user = userService
                 .userDetailsService()
                 .loadUserByUsername(request.getUsername());
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
     }
+
+    public JwtAuthenticationResponse refreshToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring("Bearer ".length());
+        String username = jwtService.extractUserName(token);
+        if (username == null || !jwtService.isTokenValidUser(token, userService.userDetailsService().loadUserByUsername(username))) {
+            throw new TokenInvalidException("Invalid token");
+        }
+        if (jwtService.isTokenExpired(token)) {
+            token = jwtService.generateToken(userService.userDetailsService().loadUserByUsername(username));
+        }
+        return new JwtAuthenticationResponse(token);
+    }
+
 
 }

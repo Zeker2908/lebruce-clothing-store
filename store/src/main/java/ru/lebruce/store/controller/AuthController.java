@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
 import ru.lebruce.store.service.AuthenticationUserService;
 import ru.lebruce.store.service.PendingUserService;
+
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -34,8 +36,15 @@ public class AuthController {
 
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/sign-in")
-    public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
-        return authenticationService.signIn(request);
+    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody @Valid SignInRequest request) {
+        return ResponseEntity.ok(authenticationService.signIn(request));
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<JwtAuthenticationResponse> refreshToken(HttpServletRequest request) {
+        JwtAuthenticationResponse response = authenticationService.refreshToken(request);
+        return ResponseEntity.ok(response);
+    }
+
 }
 

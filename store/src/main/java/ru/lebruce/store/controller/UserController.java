@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.lebruce.store.domain.dto.*;
+import ru.lebruce.store.domain.dto.EmailDto;
+import ru.lebruce.store.domain.dto.SetPasswordRequest;
+import ru.lebruce.store.domain.dto.SetUsernameRequest;
+import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.SetUsernameToken;
 import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
@@ -41,8 +44,8 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping
-    public JwtAuthenticationResponse updateUser(@RequestBody @Valid UpdateUserRequest request) {
-        return service.updatedUser(request);
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UpdateUserRequest request) {
+        return ResponseEntity.ok(service.updateUser(request));
     }
 
     @DeleteMapping("/{username}")
@@ -62,12 +65,7 @@ public class UserController {
         setUsernameService.setUsername(token.getToken());
         return ResponseEntity.ok("Ваша почта успешно изменена");
     }
-
-    @GetMapping("/username/{token}")
-    public ResponseEntity<?> getToken(@PathVariable String token) {
-        return ResponseEntity.ok(setUsernameTokenService.getToken(token));
-    }
-
+    
     private ResponseEntity<?> handleSetUsernameRequest(User user, SetUsernameRequest setUsernameRequest) throws MessagingException {
         if (service.existsByUsername(setUsernameRequest.getUsername())) {
             throw new UserAlreadyExistsException("Пользователь с такой почтой существует");

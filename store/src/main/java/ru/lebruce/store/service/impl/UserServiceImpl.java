@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.UpdateUserRequest;
 import ru.lebruce.store.domain.model.Role;
 import ru.lebruce.store.domain.model.User;
@@ -49,11 +48,10 @@ public class UserServiceImpl implements UserService {
      * @return пользователь
      */
 
-    //todo реализовать смену почты, через подтверждение почты
     @Override
     public User updateUser(UpdateUserRequest userRequest) {
         User user = getCurrentUser();
-        
+
         Optional.ofNullable(userRequest.getFirstName())
                 .filter(firstName -> !firstName.isEmpty())
                 .ifPresent(user::setFirstName);
@@ -65,10 +63,6 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
-    @Override
-    public JwtAuthenticationResponse updatedUser(UpdateUserRequest userRequest) {
-        return new JwtAuthenticationResponse(jwtService.generateToken(updateUser(userRequest)));
-    }
 
     @Override
     @Transactional

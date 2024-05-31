@@ -24,7 +24,8 @@
             .then(response => {
                 if (response.ok) {
                     alert('Ваша почта успешно изменена');
-                    window.close();
+                    localStorage.removeItem('token');
+                    window.location.href = '/login';
                 } else {
                     throw new Error('Ошибка при изменении имени пользователя');
                 }
@@ -48,7 +49,6 @@
 
     window.onload = function () {
         setUsername();
-        localStorage.removeItem('token');
     }
 </script>
 </body>
