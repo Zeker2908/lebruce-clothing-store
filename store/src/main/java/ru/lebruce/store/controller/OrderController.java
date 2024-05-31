@@ -24,22 +24,22 @@ public class OrderController {
         return service.findByUser(user);
     }
 
-    @PostMapping("save_order")
+    @PostMapping
     public Order saveOrder(@RequestBody Order order) {
         return service.saveOrder(order);
     }
 
-    @PutMapping("update_order")
+    @PutMapping
     public Order updateOrder(@RequestBody Order order) {
         return service.updateOrder(order);
     }
 
-    @DeleteMapping("delete_order_by_id/{orderId}")
+    @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable Long orderId) {
         service.deleteOrder(orderId);
     }
 
-    @DeleteMapping("delete_order_by_user/{user}")
+    @DeleteMapping("user/{user}")
     public void deleteOrder(@PathVariable User user) {
         service.deleteOrder(user);
     }

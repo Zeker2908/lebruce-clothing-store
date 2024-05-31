@@ -23,22 +23,22 @@ public class CategoryController {
         return service.findByCategoryName(categoryName);
     }
 
-    @PostMapping("save_category")
+    @PostMapping
     public Category saveCategory(@RequestBody Category category) {
         return service.saveCategory(category);
     }
 
-    @PutMapping("update_category")
+    @PutMapping
     public Category updateCategory(@RequestBody Category category) {
         return service.updateCategory(category);
     }
 
-    @DeleteMapping("delete_category_by_id/{categoryId}")
+    @DeleteMapping("/{categoryId}")
     public void deleteCategory(@PathVariable Long categoryId) {
         service.deleteCategory(categoryId);
     }
 
-    @DeleteMapping("delete_category_by_name/{categoryName}")
+    @DeleteMapping("name/{categoryName}")
     public void deleteCategory(@PathVariable String categoryName) {
         service.deleteCategory(categoryName);
     }
