@@ -12,6 +12,6 @@ public class ShoppingCartItemRequest {
     private Integer quantity;
 
     @NotNull
-    private String size;
+    private Long sizeId;
 
 }

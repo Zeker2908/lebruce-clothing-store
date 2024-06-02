@@ -32,8 +32,10 @@ public class ShoppingCartItem {
     @Column(nullable = false)
     private int quantity;
 
+    @ManyToOne
     @Column(nullable = false)
-    private String size;
+    @JoinColumn(name = "product_size_id")
+    private ProductSize size;
 
     @Formula("(select p.price from products p where p.product_id = product_id)")
     private double priceForOne;

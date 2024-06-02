@@ -9,6 +9,7 @@ import ru.lebruce.store.exception.ShoppingCartItemAlreadyExists;
 import ru.lebruce.store.exception.ShoppingCartItemNotFoundException;
 import ru.lebruce.store.repository.ShoppingCartItemRepository;
 import ru.lebruce.store.service.ProductService;
+import ru.lebruce.store.service.ProductSizeService;
 import ru.lebruce.store.service.ShoppingCartItemService;
 import ru.lebruce.store.service.UserService;
 
@@ -18,19 +19,29 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     private final ShoppingCartItemRepository repository;
     private final UserService userService;
     private final ProductService productService;
+    private final ProductSizeService productSizeService;
 
     @Override
     public ShoppingCartItem create(ShoppingCartItemRequest shoppingCartItemRequest) {
         var user = userService.getCurrentUser();
-        if (repository.existsByProductAndShoppingCart(productService.getByProductId(shoppingCartItemRequest.getProductId()), user.getShoppingCart())) {
+        var product = productService.getByProductId(shoppingCartItemRequest.getProductId());
+        var size = productSizeService.getProductSizeById(shoppingCartItemRequest.getSizeId());
+
+        if (!size.getAvailable()) {
+            throw new IllegalArgumentException("Данный размер закончился");
+        }
+
+        if (repository.existsByProductAndShoppingCart(product, user.getShoppingCart())) {
             throw new ShoppingCartItemAlreadyExists("Товар уже добавлен в корзину");
         }
+
         var item = ShoppingCartItem.builder()
                 .shoppingCart(user.getShoppingCart())
-                .product(productService.getByProductId(shoppingCartItemRequest.getProductId()))
+                .product(product)
                 .quantity(shoppingCartItemRequest.getQuantity())
-                .size(shoppingCartItemRequest.getSize())
+                .size(size)
                 .build();
+
         return repository.save(item);
     }
 

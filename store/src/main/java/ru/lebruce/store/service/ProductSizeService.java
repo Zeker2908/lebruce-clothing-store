@@ -6,6 +6,8 @@ import ru.lebruce.store.domain.model.ProductSize;
 public interface ProductSizeService {
     void createProductSize(ProductSizeRequest productSize);
 
+    ProductSize getProductSizeById(Long id);
+
     void updateProductSize(ProductSize productSize);
 
     void deleteProductSize(Long id);

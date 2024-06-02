@@ -31,8 +31,14 @@ public class ProductSizeServiceImpl implements ProductSizeService {
     }
 
     @Override
+    public ProductSize getProductSizeById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new ProductSizeNotFoundException("Такого размера не сущестует"));
+    }
+
+    @Override
     public void updateProductSize(ProductSize productSize) {
-        if (!repository.findById(productSize.getId()).isPresent()) {
+        if (repository.findById(productSize.getId()).isEmpty()) {
             throw new ProductSizeNotFoundException("Такого размера не сущестует");
         }
         repository.save(productSize);

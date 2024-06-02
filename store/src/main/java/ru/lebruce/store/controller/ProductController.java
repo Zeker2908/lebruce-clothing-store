@@ -17,8 +17,6 @@ import ru.lebruce.store.service.CharacteristicService;
 import ru.lebruce.store.service.ProductService;
 import ru.lebruce.store.service.ProductSizeService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/products")
 @AllArgsConstructor
@@ -70,11 +68,6 @@ public class ProductController {
     public ResponseEntity<?> deleteProductByName(@PathVariable String productName) {
         service.deleteProduct(productName);
         return ResponseEntity.ok("Товар с названием " + productName + " успешно удален");
-    }
-
-    @GetMapping("/characteristic")
-    public List<Characteristic> findAllCharacteristic() {
-        return characteristicService.findAllCharacteristic();
     }
 
     @PostMapping("/characteristic")

@@ -10,18 +10,11 @@ import ru.lebruce.store.repository.CharacteristicRepository;
 import ru.lebruce.store.service.CharacteristicService;
 import ru.lebruce.store.service.ProductService;
 
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class CharacteristicServiceImpl implements CharacteristicService {
     private final CharacteristicRepository repository;
     private final ProductService productService;
-
-    @Override
-    public List<Characteristic> findAllCharacteristic() {
-        return repository.findAll();
-    }
 
     @Override
     public Characteristic create(CharacteristicRequest characteristic) {
