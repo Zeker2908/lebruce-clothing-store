@@ -1,14 +1,13 @@
 package ru.lebruce.store.service;
 
+import org.springframework.data.domain.Page;
 import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 
-import java.util.List;
-
 public interface ReviewService {
-    List<Review> findAll();
+    Page<Review> findAllByProductId(Long productId, int page, int size, String[] sort);
 
-    Review saveReview(Review review);
+    Review findByProductIdAndCurrentUser(Long productId);
 
     Review updateReview(Review review);
 

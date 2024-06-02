@@ -32,11 +32,13 @@ public class ShoppingCartItem {
     @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
+    private String size;
+
     @Formula("(select p.price from products p where p.product_id = product_id)")
     private double priceForOne;
 
     @Formula("(select p.price * quantity from products p where p.product_id = product_id)")
     private double totalPrice;
 
-    //todo добавить проверку на наличие товара и сделать поле активна карта или нет
 }

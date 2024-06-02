@@ -9,8 +9,5 @@ public interface CharacteristicRepository extends JpaRepository<Characteristic, 
 
     void deleteByCharacteristicId(Long characteristicId);
 
-    void deleteByCharacteristicName(String characteristicName);
-
-    Characteristic findByCharacteristicName(String characteristicName);
-
+    boolean existsByProduct_ProductIdAndCharacteristicName(Long productId, String characteristicName);
 }

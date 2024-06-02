@@ -96,4 +96,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleShoppingCartItemAlreadyExists(ShoppingCartItemAlreadyExists ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(CharacteristicAlreadyExistsException.class)
+    public ResponseEntity<?> handleCharacteristicAlreadyExists(CharacteristicAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ProductSizeAlreadyExistsException.class)
+    public ResponseEntity<?> handleProductSizeAlreadyExists(ProductSizeAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

@@ -21,7 +21,6 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long shoppingCartId;
 
-    //todo убрать JsonIgnore и сделать DTO, чтобы выводило только нужную информацию о корзине
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore

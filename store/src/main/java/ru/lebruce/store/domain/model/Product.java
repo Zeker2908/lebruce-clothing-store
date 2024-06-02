@@ -9,9 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Data
@@ -42,13 +42,13 @@ public class Product {
     @Column(length = 1000)
     private String description;
 
-    @Column(nullable = false)
-    @PositiveOrZero
+    @Formula("(SELECT COALESCE(SUM(ps.quantity), 0) FROM product_size ps WHERE ps.product_id = product_id)")
     private int availableQuantity;
 
     @ElementCollection
     @Column(nullable = false)
     @Size(min = 1, max = 10)
+    @UniqueElements
     private List<String> imageUrls;
 
     @Formula("(SELECT AVG(r.rating) FROM reviews r WHERE r.product_id = product_id)")
@@ -59,13 +59,15 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<Review> reviews;
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Characteristic> characteristics;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductSize> sizes;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<Characteristic> characteristics;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private Set<ShoppingCartItem> shoppingCartItems;
+    private List<ShoppingCartItem> shoppingCartItems;
 }

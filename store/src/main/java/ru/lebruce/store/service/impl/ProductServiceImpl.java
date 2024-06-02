@@ -47,14 +47,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort) {
+        if (!categoryRepository.existsByCategoryName(categoryName)) {
+            throw new CategoryNotFoundException("Категория не найдена");
+        }
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
         return repository.findByCategoryName(categoryName, pageable);
     }
 
     @Override
-    public Product getByProductName(String productName) {
-        return repository.findByProductName(productName).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
+    public List<Product> getByProductNameOrBrand(String productName, String brand) {
+        return repository.findByProductNameOrBrand(productName, brand).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
     }
+
 
     @Override
     public Product getByProductId(Long productId) {
@@ -76,7 +80,6 @@ public class ProductServiceImpl implements ProductService {
                         new CategoryNotFoundException("Данной категории не существует")))
                 .price(productRequest.getPrice())
                 .description(productRequest.getDescription())
-                .availableQuantity(productRequest.getAvailableQuantity())
                 .imageUrls(uploadImages(images))
                 .build();
 

@@ -2,13 +2,12 @@ package ru.lebruce.store.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.service.ReviewService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/review")
@@ -17,8 +16,16 @@ public class ReviewController {
     private final ReviewService service;
 
     @GetMapping
-    public List<Review> getReviews() {
-        return service.findAll();
+    public ResponseEntity<Page<Review>> getReviews(@RequestParam Long productId,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(defaultValue = "reviewId,asc") String[] sort) {
+        return ResponseEntity.ok(service.findAllByProductId(productId, page, size, sort));
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<Review> getReview(@PathVariable Long productId) {
+        return ResponseEntity.ok(service.findByProductIdAndCurrentUser(productId));
     }
 
     @PostMapping

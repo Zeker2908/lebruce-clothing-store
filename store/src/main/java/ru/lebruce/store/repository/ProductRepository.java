@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.domain.model.Product;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     void deleteByProductName(String productName);
 
-    Optional<Product> findByProductName(String productName);
+    Optional<List<Product>> findByProductNameOrBrand(String productName, String brand);
 
     Optional<Product> findByProductId(Long productId);
 

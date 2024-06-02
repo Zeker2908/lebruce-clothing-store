@@ -2,16 +2,20 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.ReviewRequest;
+import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.domain.model.Review;
 import ru.lebruce.store.exception.ReviewAlreadyExists;
+import ru.lebruce.store.exception.ReviewNotFoundException;
 import ru.lebruce.store.repository.ReviewRepository;
 import ru.lebruce.store.service.ProductService;
 import ru.lebruce.store.service.ReviewService;
 import ru.lebruce.store.service.UserService;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -21,13 +25,17 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserService userService;
 
     @Override
-    public List<Review> findAll() {
-        return repository.findAll();
+    public Page<Review> findAllByProductId(Long productId, int page, int size, String[] sort) {
+        Product product = productService.getByProductId(productId);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findByProduct(product, pageable);
     }
 
     @Override
-    public Review saveReview(Review review) {
-        return repository.save(review);
+    public Review findByProductIdAndCurrentUser(Long productId) {
+        Long userId = userService.getCurrentUser().getUserId();
+        return repository.findByProductIdAndUserId(productId, userId).orElseThrow(() ->
+                new ReviewNotFoundException("Отзыв не найден"));
     }
 
     @Override

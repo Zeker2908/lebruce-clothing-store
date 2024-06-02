@@ -13,7 +13,7 @@ public interface ProductService {
 
     Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort);
 
-    Product getByProductName(String productName);
+    List<Product> getByProductNameOrBrand(String productName, String brand);
 
     Product getByProductId(Long productId);
 
