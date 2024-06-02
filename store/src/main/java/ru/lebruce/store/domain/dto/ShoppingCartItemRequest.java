@@ -11,4 +11,7 @@ public class ShoppingCartItemRequest {
     @NotNull(message = "Колличество не должно быть пустым")
     private Integer quantity;
 
+    @NotNull
+    private String size;
+
 }

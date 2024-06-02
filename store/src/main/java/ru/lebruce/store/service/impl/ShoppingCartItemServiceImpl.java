@@ -29,6 +29,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
                 .shoppingCart(user.getShoppingCart())
                 .product(productService.getByProductId(shoppingCartItemRequest.getProductId()))
                 .quantity(shoppingCartItemRequest.getQuantity())
+                .size(shoppingCartItemRequest.getSize())
                 .build();
         return repository.save(item);
     }
