@@ -33,7 +33,6 @@ public class ShoppingCartItem {
     private int quantity;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "product_size_id")
     private ProductSize size;
 

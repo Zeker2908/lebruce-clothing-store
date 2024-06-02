@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -35,5 +37,10 @@ public class ProductSize {
 
     @Formula("CASE WHEN quantity > 0 THEN true ELSE false END")
     private Boolean available;
+
+    @OneToMany(mappedBy = "product_size", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ShoppingCartItem> shoppingCartItems;
+
 
 }
