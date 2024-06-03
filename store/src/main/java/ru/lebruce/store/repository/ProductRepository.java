@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.domain.model.Product;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,9 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     void deleteByProductName(String productName);
 
-    Optional<List<Product>> findByProductNameOrBrand(String productName, String brand);
-
     Optional<Product> findByProductId(Long productId);
+
+    Page<Product> findByProductNameContainingIgnoreCaseOrBrandContainingIgnoreCase(String productName, String brand, Pageable pageable);
 
     boolean existsByProductNameAndBrandAndCategory(String productName, String brand, Category category);
 

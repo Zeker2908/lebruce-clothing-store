@@ -4,7 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.dto.ShoppingCartItemRequest;
+import ru.lebruce.store.domain.model.Product;
+import ru.lebruce.store.domain.model.ProductSize;
 import ru.lebruce.store.domain.model.ShoppingCartItem;
+import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.ShoppingCartItemAlreadyExists;
 import ru.lebruce.store.exception.ShoppingCartItemNotFoundException;
 import ru.lebruce.store.repository.ShoppingCartItemRepository;
@@ -23,15 +26,15 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     public ShoppingCartItem create(ShoppingCartItemRequest shoppingCartItemRequest) {
-        var user = userService.getCurrentUser();
-        var product = productService.getByProductId(shoppingCartItemRequest.getProductId());
-        var size = productSizeService.getProductSizeById(shoppingCartItemRequest.getSizeId());
+        User user = userService.getCurrentUser();
+        Product product = productService.getByProductId(shoppingCartItemRequest.getProductId());
+        ProductSize size = productSizeService.getProductSizeById(shoppingCartItemRequest.getSizeId());
 
         if (!size.getAvailable()) {
             throw new IllegalArgumentException("Данный размер закончился");
         }
 
-        if (repository.existsByProductAndShoppingCart(product, user.getShoppingCart())) {
+        if (repository.existsByProductAndShoppingCartAndSize(product, user.getShoppingCart(), size)) {
             throw new ShoppingCartItemAlreadyExists("Товар уже добавлен в корзину");
         }
 

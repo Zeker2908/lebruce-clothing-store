@@ -106,4 +106,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleProductSizeAlreadyExists(ProductSizeAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ProductSizeNotFoundException.class)
+    public ResponseEntity<?> handleProductSizeNotFoundException(ProductSizeNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

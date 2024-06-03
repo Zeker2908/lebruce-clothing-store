@@ -55,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getByProductNameOrBrand(String productName, String brand) {
-        return repository.findByProductNameOrBrand(productName, brand).orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
+    public Page<Product> searchProducts(String query, Pageable pageable) {
+        return repository.findByProductNameContainingIgnoreCaseOrBrandContainingIgnoreCase(query, query, pageable);
     }
 
 

@@ -2,6 +2,8 @@ package ru.lebruce.store.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.repository.CategoryRepository;
@@ -22,6 +24,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findByCategoryName(String categoryName) {
         return repository.findByCategoryName(categoryName);
+    }
+
+    @Override
+    public Page<Category> searchCategory(String categoryName, Pageable pageable) {
+        return repository.findByCategoryNameContainingIgnoreCase(categoryName, pageable);
     }
 
     @Override
