@@ -13,6 +13,8 @@ public interface ProductService {
 
     Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort);
 
+    Page<Product> findAllProductsByBrand(String brandName, int page, int size, String[] sort);
+
     Page<Product> searchProducts(String query, int page, int size, String[] sort);
 
     Product getByProductId(Long productId);

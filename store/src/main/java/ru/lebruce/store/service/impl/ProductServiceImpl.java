@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
+import ru.lebruce.store.exception.BrandNotFoundException;
 import ru.lebruce.store.exception.CategoryNotFoundException;
 import ru.lebruce.store.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.exception.ProductNotFoundException;
+import ru.lebruce.store.repository.BrandRepository;
 import ru.lebruce.store.repository.CategoryRepository;
 import ru.lebruce.store.repository.ProductRepository;
 import ru.lebruce.store.service.BrandService;
@@ -37,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
     private final BrandService brandService;
+    private final BrandRepository brandRepository;
 
     private static final String PRODUCT_NOT_FOUND = "Товар с названием %s не найден";
     private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
@@ -54,6 +57,15 @@ public class ProductServiceImpl implements ProductService {
         }
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
         return repository.findByCategoryName(categoryName, pageable);
+    }
+
+    @Override
+    public Page<Product> findAllProductsByBrand(String brandName, int page, int size, String[] sort) {
+        if (!brandRepository.existsByName(brandName)) {
+            throw new BrandNotFoundException("Бренд не найдена");
+        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findByBrand_Name(brandName, pageable);
     }
 
     @Override

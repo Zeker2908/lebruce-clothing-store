@@ -28,6 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByProductName(String productName);
 
+    Page<Product> findByBrand_Name(String name, Pageable pageable);
+
     @Query("SELECT p FROM Product p WHERE p.category.categoryName = :categoryName")
     Page<Product> findByCategoryName(@Param("categoryName") String categoryName, Pageable pageable);
 

@@ -9,4 +9,6 @@ import ru.lebruce.store.domain.model.Brand;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
     Page<Brand> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    boolean existsByName(String name);
 }
