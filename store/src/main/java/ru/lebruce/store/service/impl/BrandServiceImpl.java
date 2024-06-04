@@ -1,12 +1,12 @@
 package ru.lebruce.store.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Brand;
 import ru.lebruce.store.exception.BrandNotFoundException;
 import ru.lebruce.store.repository.BrandRepository;

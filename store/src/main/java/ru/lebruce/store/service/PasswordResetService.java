@@ -29,6 +29,7 @@ public class PasswordResetService {
         passwordResetTokenService.delete(passwordResetToken);
     }
 
+    @Transactional
     @Async("taskExecutor")
     public void resetPasswordRequest(User user) throws MessagingException {
         var token = passwordResetTokenService.generateToken(user);

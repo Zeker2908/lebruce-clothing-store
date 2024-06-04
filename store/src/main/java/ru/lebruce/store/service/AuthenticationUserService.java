@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.JwtAuthenticationResponse;
 import ru.lebruce.store.domain.dto.SignInRequest;
 import ru.lebruce.store.domain.dto.SignUpRequest;
@@ -34,6 +35,7 @@ public class AuthenticationUserService {
      * @param request данные пользователя
      */
     @Async("taskExecutor")
+    @Transactional
     public void signUp(SignUpRequest request) throws MessagingException {
 
         var pendingUser = PendingUser.builder()

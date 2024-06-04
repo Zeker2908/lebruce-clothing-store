@@ -1,8 +1,8 @@
 package ru.lebruce.store.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.ProductSizeRequest;
 import ru.lebruce.store.domain.model.ProductSize;
 import ru.lebruce.store.exception.ProductSizeAlreadyExistsException;

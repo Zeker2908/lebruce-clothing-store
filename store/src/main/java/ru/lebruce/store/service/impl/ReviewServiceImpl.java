@@ -1,12 +1,12 @@
 package ru.lebruce.store.service.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.ReviewRequest;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.domain.model.Review;

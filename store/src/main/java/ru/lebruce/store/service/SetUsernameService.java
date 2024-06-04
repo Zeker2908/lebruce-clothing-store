@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.dto.SetUsernameRequest;
 import ru.lebruce.store.domain.model.SetUsernameToken;
 import ru.lebruce.store.domain.model.User;
@@ -16,6 +17,7 @@ public class SetUsernameService {
     private final SetUsernameTokenService setUsernameTokenService;
 
 
+    @Transactional
     public void setUsername(String token) {
         SetUsernameToken setUsernameToken = setUsernameTokenService.getToken(token);
         User user = setUsernameToken.getUser();
@@ -28,6 +30,7 @@ public class SetUsernameService {
         return setUsernameTokenService.existsByUser(user);
     }
 
+    @Transactional
     @Async("taskExecutor")
     public void setUsernameRequest(User user, SetUsernameRequest setUsernameRequest) throws MessagingException {
         var token = setUsernameTokenService.generateToken(user, setUsernameRequest.getUsername());
