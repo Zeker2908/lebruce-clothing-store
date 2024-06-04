@@ -4,9 +4,6 @@ package ru.lebruce.store.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,14 +11,8 @@ import ru.lebruce.store.domain.dto.CharacteristicRequest;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.dto.ProductSizeRequest;
 import ru.lebruce.store.domain.dto.ReviewRequest;
-import ru.lebruce.store.domain.model.Characteristic;
-import ru.lebruce.store.domain.model.Product;
-import ru.lebruce.store.domain.model.ProductSize;
-import ru.lebruce.store.domain.model.Review;
-import ru.lebruce.store.service.CharacteristicService;
-import ru.lebruce.store.service.ProductService;
-import ru.lebruce.store.service.ProductSizeService;
-import ru.lebruce.store.service.ReviewService;
+import ru.lebruce.store.domain.model.*;
+import ru.lebruce.store.service.*;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -31,6 +22,7 @@ public class ProductController {
     private final CharacteristicService characteristicService;
     private final ProductSizeService productSizeService;
     private final ReviewService reviewService;
+    private final BrandService brandService;
 
     @GetMapping
     public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
@@ -50,23 +42,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findByProductName(@PathVariable Long id) {
+    public ResponseEntity<?> findByProductId(@PathVariable Long id) {
         return ResponseEntity.ok(service.getByProductId(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Product>> search(@RequestParam String query) {
-        Pageable pageable = PageRequest.of(0, 5);
-        return ResponseEntity.ok(service.searchProducts(query, pageable));
-    }
-
-    @GetMapping("/found")
-    public ResponseEntity<Page<Product>> searched(@RequestParam String query,
-                                                  @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "20") int size,
-                                                  @RequestParam(defaultValue = "productId,asc") String[] sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
-        return ResponseEntity.ok(service.searchProducts(query, pageable));
+    public ResponseEntity<Page<Product>> search(@RequestParam String query,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "5") int size,
+                                                @RequestParam(defaultValue = "reviewCount,desc") String[] sort) {
+        Page<Product> productPage = service.searchProducts(query, page, size, sort);
+        return ResponseEntity.ok(productPage);
     }
 
 
@@ -91,6 +77,39 @@ public class ProductController {
     public ResponseEntity<?> deleteProductByName(@PathVariable String productName) {
         service.deleteProduct(productName);
         return ResponseEntity.ok("Товар с названием " + productName + " успешно удален");
+    }
+
+    //Методы, которые относятся к брендам товаров
+    @GetMapping("/brand")
+    public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "name,asc") String[] sort) {
+        return ResponseEntity.ok(brandService.findAll(page, size, sort));
+    }
+
+    @GetMapping("/brand/search")
+    public ResponseEntity<Page<Brand>> searchBrand(@RequestParam String query,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "5") int size,
+                                                   @RequestParam(defaultValue = "name,asc") String[] sort) {
+        Page<Brand> productPage = brandService.search(query, page, size, sort);
+        return ResponseEntity.ok(productPage);
+    }
+
+    @PostMapping("/brand")
+    public ResponseEntity<?> create(@RequestBody Brand brand) {
+        return ResponseEntity.ok(brandService.saveBrand(brand));
+    }
+
+    @PutMapping("/brand")
+    public ResponseEntity<?> update(@RequestBody Brand brand) {
+        return ResponseEntity.ok(brandService.updateBrand(brand));
+    }
+
+    @DeleteMapping("/brand/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        brandService.deleteById(id);
+        return ResponseEntity.ok("Бренд успешно удален");
     }
 
     //Методы, которые относятся к характеристикам товаров

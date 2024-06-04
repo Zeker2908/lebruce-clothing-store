@@ -13,8 +13,8 @@ public class ProductRequest {
     @NotBlank(message = "Наименование продукта не должно быть пустым")
     private String productName;
 
-    @NotBlank(message = "Бренд продукта не должен быть пустым")
-    private String brand;
+    @NotNull(message = "Бренд продукта не должен быть пустым")
+    private Long brandId;
 
     @NotNull(message = "Категория продукта не должна быть пустой")
     private Long categoryId;

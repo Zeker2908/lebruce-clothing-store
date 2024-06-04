@@ -111,4 +111,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleProductSizeNotFoundException(ProductSizeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(BrandNotFoundException.class)
+    public ResponseEntity<?> handleBrandNotFoundException(BrandNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(BrandAlreadyExistsException.class)
+    public ResponseEntity<?> handleBrandAlreadyExistsException(BrandAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

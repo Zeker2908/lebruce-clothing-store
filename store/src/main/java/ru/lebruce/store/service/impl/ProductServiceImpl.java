@@ -16,6 +16,7 @@ import ru.lebruce.store.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.exception.ProductNotFoundException;
 import ru.lebruce.store.repository.CategoryRepository;
 import ru.lebruce.store.repository.ProductRepository;
+import ru.lebruce.store.service.BrandService;
 import ru.lebruce.store.service.ProductService;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
+    private final BrandService brandService;
 
     private static final String PRODUCT_NOT_FOUND = "Товар с названием %s не найден";
     private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
@@ -55,8 +57,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> searchProducts(String query, Pageable pageable) {
-        return repository.findByProductNameContainingIgnoreCaseOrBrandContainingIgnoreCase(query, query, pageable);
+    public Page<Product> searchProducts(String query, int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findByProductNameContainingIgnoreCaseOrBrand_NameContainingIgnoreCase(query, query, pageable);
     }
 
 
@@ -67,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductRequest productRequest, MultipartFile[] images) {
-        if (repository.existsByProductNameAndBrandAndCategory(productRequest.getProductName(), productRequest.getBrand(),
+        if (repository.existsByProductNameAndBrandAndCategory(productRequest.getProductName(), brandService.getById(productRequest.getBrandId()),
                 categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(() ->
                         new CategoryNotFoundException("Данной категории не существует")))) {
             throw new ProductAlreadyExistsException(PRODUCT_ALREADY_EXISTS_MESSAGE);
@@ -75,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 
         var product = Product.builder()
                 .productName(productRequest.getProductName())
-                .brand(productRequest.getBrand())
+                .brand(brandService.getById(productRequest.getBrandId()))
                 .category(categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(() ->
                         new CategoryNotFoundException("Данной категории не существует")))
                 .price(productRequest.getPrice())

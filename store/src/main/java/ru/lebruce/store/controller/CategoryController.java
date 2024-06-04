@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.service.CategoryService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/categories")
 @AllArgsConstructor
@@ -18,8 +16,10 @@ public class CategoryController {
     private final CategoryService service;
 
     @GetMapping
-    public List<Category> findAllCategory() {
-        return service.findAllCategories();
+    public Page<Category> findAllCategory(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(defaultValue = "categoryName,asc") String[] sort) {
+        return service.findAllCategories(page, size, sort);
     }
 
     @GetMapping("/{categoryName}")

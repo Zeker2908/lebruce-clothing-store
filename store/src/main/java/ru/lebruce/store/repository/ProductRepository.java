@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.lebruce.store.domain.model.Brand;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.domain.model.Product;
 
@@ -19,9 +20,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByProductId(Long productId);
 
-    Page<Product> findByProductNameContainingIgnoreCaseOrBrandContainingIgnoreCase(String productName, String brand, Pageable pageable);
+    Page<Product> findByProductNameContainingIgnoreCaseOrBrand_NameContainingIgnoreCase(String productName, String brandName, Pageable pageable);
 
-    boolean existsByProductNameAndBrandAndCategory(String productName, String brand, Category category);
+    boolean existsByProductNameAndBrandAndCategory(String productName, Brand brand, Category category);
 
     boolean existsByProductId(Long productId);
 

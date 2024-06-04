@@ -3,13 +3,13 @@ package ru.lebruce.store.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.repository.CategoryRepository;
 import ru.lebruce.store.service.CategoryService;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,8 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
 
     @Override
-    public List<Category> findAllCategories() {
-        return repository.findAll();
+    public Page<Category> findAllCategories(int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.by(sort[0]).with(Sort.Direction.fromString(sort[1]))));
+        return repository.findAll(pageable);
     }
 
     @Override

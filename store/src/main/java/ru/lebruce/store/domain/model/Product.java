@@ -28,8 +28,9 @@ public class Product {
     @Column(nullable = false)
     private String productName;
 
-    @Column(nullable = false)
-    private String brand;
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

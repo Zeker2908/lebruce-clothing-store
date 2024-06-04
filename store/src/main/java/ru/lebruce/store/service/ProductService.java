@@ -1,7 +1,6 @@
 package ru.lebruce.store.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
@@ -14,8 +13,8 @@ public interface ProductService {
 
     Page<Product> findAllProductsByCategory(String categoryName, int page, int size, String[] sort);
 
-    Page<Product> searchProducts(String query, Pageable pageable);
-    
+    Page<Product> searchProducts(String query, int page, int size, String[] sort);
+
     Product getByProductId(Long productId);
 
     Product saveProduct(Product product);
