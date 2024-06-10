@@ -74,7 +74,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
             return null;
         }
 
-        if (newQuantity > item.getProduct().getAvailableQuantity()) {
+        if (newQuantity > item.getSize().getQuantity()) {
             throw new IllegalArgumentException("Превышает доступное количество продукции");
         }
 

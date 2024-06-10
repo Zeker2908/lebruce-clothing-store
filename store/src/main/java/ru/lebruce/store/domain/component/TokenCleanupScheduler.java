@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.lebruce.store.domain.model.ConfirmationToken;
 import ru.lebruce.store.domain.model.PasswordResetToken;
+import ru.lebruce.store.domain.model.SetUsernameToken;
 import ru.lebruce.store.repository.ConfirmationTokenRepository;
 import ru.lebruce.store.repository.PasswordResetTokenRepository;
 import ru.lebruce.store.repository.SetUsernameTokenRepository;
@@ -32,5 +33,13 @@ public class TokenCleanupScheduler {
                 .findAllByExpiresAtBefore(LocalDateTime.now());
         passwordResetTokenRepository.deleteAll(expiredTokens);
     }
+
+    @Scheduled(fixedRate = 60000)
+    public void cleanUpExpiredUsernameTokens() {
+        List<SetUsernameToken> expiredTokens = setUsernameTokenRepository
+                .findAllByExpiresAtBefore(LocalDateTime.now());
+        setUsernameTokenRepository.deleteAll(expiredTokens);
+    }
+
 
 }

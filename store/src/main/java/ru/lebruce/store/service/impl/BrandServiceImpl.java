@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Brand;
+import ru.lebruce.store.exception.BrandAlreadyExistsException;
 import ru.lebruce.store.exception.BrandNotFoundException;
 import ru.lebruce.store.repository.BrandRepository;
 import ru.lebruce.store.service.BrandService;
@@ -37,6 +38,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand saveBrand(Brand brand) {
+        if (brandRepository.existsByNameIgnoreCase(brand.getName())) {
+            throw new BrandAlreadyExistsException("Такой бренд уже существует");
+        }
         return brandRepository.save(brand);
     }
 

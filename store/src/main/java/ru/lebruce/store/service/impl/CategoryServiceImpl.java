@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Category;
+import ru.lebruce.store.exception.CategoryAlreadyExistsException;
 import ru.lebruce.store.repository.CategoryRepository;
 import ru.lebruce.store.service.CategoryService;
 
@@ -34,6 +35,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category saveCategory(Category category) {
+        if (repository.existsByCategoryNameIgnoreCase(category.getCategoryName())) {
+            throw new CategoryAlreadyExistsException("Категория с таким названием уже существует");
+        }
         return repository.save(category);
     }
 

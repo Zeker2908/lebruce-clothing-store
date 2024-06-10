@@ -11,4 +11,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     Page<Brand> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     boolean existsByName(String name);
+
+    boolean existsByNameIgnoreCase(String name);
 }

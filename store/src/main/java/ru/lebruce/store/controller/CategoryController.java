@@ -34,7 +34,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category saveCategory(@RequestBody Category category) {
+    public Category createCategory(@RequestBody Category category) {
         return service.saveCategory(category);
     }
 
