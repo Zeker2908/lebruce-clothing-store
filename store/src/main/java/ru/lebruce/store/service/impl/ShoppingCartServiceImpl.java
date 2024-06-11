@@ -20,6 +20,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public Integer getQuantityPosition() {
+        ShoppingCart shoppingCart = getCurrentShoppingCart();
+        return shoppingCart.getQuantityOfPosition();
+    }
+
+    @Override
     public ShoppingCart create(ShoppingCart shoppingCart) {
         return repository.save(shoppingCart);
     }
