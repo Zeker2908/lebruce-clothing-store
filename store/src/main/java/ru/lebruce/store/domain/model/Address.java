@@ -1,10 +1,17 @@
 package ru.lebruce.store.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "addresses")
 public class Address {
     @Id
@@ -12,7 +19,8 @@ public class Address {
     private Long addressId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @Column(nullable = false)
@@ -32,7 +40,7 @@ public class Address {
 
     @Column(nullable = false)
     private String apartmentNumber;
-    
+
     @Column(nullable = false)
     private String zipCode;
 }

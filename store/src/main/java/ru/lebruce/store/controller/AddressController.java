@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.lebruce.store.domain.dto.AddressRequest;
 import ru.lebruce.store.domain.model.Address;
 import ru.lebruce.store.service.AddressService;
 
@@ -16,28 +17,19 @@ public class AddressController {
 
 
     @GetMapping
-    public List<Address> findAllAddress() {
-        return service.findAllAddress();
+    public Address getAddress() {
+        return service.getAddresses();
     }
 
-    @GetMapping("/{city}")
-    public Address findByAddressByCity(@PathVariable String city) {
-        return service.findByCity(city);
+    @GetMapping("/all")
+    public List<Address> getAllAddress() {
+        return service.findAll();
     }
 
-    @GetMapping("/{country}")
-    public Address findByAddressByCountry(@PathVariable String country) {
-        return service.findByCountry(country);
-    }
-
-    @GetMapping("/{zipCode}")
-    public Address findByAddressByZipCode(@PathVariable String zipCode) {
-        return service.findByZipCode(zipCode);
-    }
 
     @PostMapping()
-    public Address saveAddress(@RequestBody Address address) {
-        return service.saveAddress(address);
+    public Address saveAddress(@RequestBody AddressRequest addressRequest) {
+        return service.createAddress(addressRequest);
     }
 
     @PutMapping()

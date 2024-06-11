@@ -1,20 +1,19 @@
 package ru.lebruce.store.service;
 
+import ru.lebruce.store.domain.dto.AddressRequest;
 import ru.lebruce.store.domain.model.Address;
 
 import java.util.List;
 
 public interface AddressService {
 
-    List<Address> findAllAddress();
+    Address getAddresses();
 
-    Address findByCity(String city);
-
-    Address findByCountry(String country);
-
-    Address findByZipCode(String zipCode);
+    List<Address> findAll();
 
     Address saveAddress(Address address);
+
+    Address createAddress(AddressRequest addressRequest);
 
     Address updateAddress(Address address);
 
