@@ -20,12 +20,16 @@ import ru.lebruce.store.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден";
+    private static final String USER_ALREADY_EXISTS_MESSAGE = "Пользователь с таким email уже существует";
+    private static final String AUTHENTICATION_NOT_FOUND_MESSAGE = "Пользователь не аутентифицирован";
+
 
     private final UserRepository repository;
     private final JwtService jwtService;
@@ -52,15 +56,16 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UpdateUserRequest userRequest) {
         User user = getCurrentUser();
 
-        Optional.ofNullable(userRequest.getFirstName())
-                .filter(firstName -> !firstName.isEmpty())
-                .ifPresent(user::setFirstName);
-        Optional.ofNullable(userRequest.getLastName())
-                .filter(lastName -> !lastName.isEmpty())
-                .ifPresent(user::setLastName);
-
+        updateIfPresent(userRequest.getFirstName(), user::setFirstName);
+        updateIfPresent(userRequest.getLastName(), user::setLastName);
 
         return repository.save(user);
+    }
+
+    private void updateIfPresent(String value, Consumer<String> updater) {
+        Optional.ofNullable(value)
+                .filter(v -> !v.isEmpty())
+                .ifPresent(updater);
     }
 
 
@@ -82,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistsException(USER_ALREADY_EXISTS_MESSAGE);
         }
 
         return saveUser(user);
@@ -126,7 +131,7 @@ public class UserServiceImpl implements UserService {
             return repository.findByUsername(userDetails.getUsername()).orElseThrow(() ->
                     new UserNotFoundException(USER_NOT_FOUND_MESSAGE));
         } else {
-            throw new AuthenticationCredentialsNotFoundException("Пользователь не аутентифицирован");
+            throw new AuthenticationCredentialsNotFoundException(AUTHENTICATION_NOT_FOUND_MESSAGE);
         }
     }
 

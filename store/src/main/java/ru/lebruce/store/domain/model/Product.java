@@ -52,7 +52,7 @@ public class Product {
     @UniqueElements
     private List<String> imageUrls;
 
-    @Formula("(SELECT AVG(r.rating) FROM reviews r WHERE r.product_id = product_id)")
+    @Formula("(SELECT COALESCE(AVG(r.rating), 0) FROM reviews r WHERE r.product_id = product_id)")
     private Double rating;
 
     @Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
