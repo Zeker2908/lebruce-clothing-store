@@ -1,6 +1,7 @@
 package ru.lebruce.store.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "product_size", indexes = {
+        @Index(name = "idx_product_id", columnList = "product_id"),
+        @Index(name = "idx_size", columnList = "size")
+})
 public class ProductSize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +46,9 @@ public class ProductSize {
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ShoppingCartItem> shoppingCartItems;
+
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @Schema(description = "Элементы заказов, содержащие продукт")
+    private List<OrderItem> orderItems;
 }

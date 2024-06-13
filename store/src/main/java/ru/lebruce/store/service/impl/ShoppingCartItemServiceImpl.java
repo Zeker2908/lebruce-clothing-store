@@ -25,6 +25,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     private final ProductSizeService productSizeService;
 
     @Override
+    @Transactional
     public ShoppingCartItem create(ShoppingCartItemRequest shoppingCartItemRequest) {
         User user = userService.getCurrentUser();
         Product product = productService.getByProductId(shoppingCartItemRequest.getProductId());
@@ -59,6 +60,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     }
 
     @Override
+    @Transactional
     public ShoppingCartItem updateQuantity(Long shoppingCartItemId, int quantityChange) {
         var item = repository.findById(shoppingCartItemId)
                 .orElseThrow(() -> new ShoppingCartItemNotFoundException("Объект не найден"));

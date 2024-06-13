@@ -12,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "brands")
+@Table(name = "brands", indexes = {
+        @Index(name = "idx_brand_name", columnList = "name")
+})
 public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

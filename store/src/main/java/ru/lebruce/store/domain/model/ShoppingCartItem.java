@@ -14,7 +14,11 @@ import org.hibernate.annotations.Formula;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "shopping_cart_items")
+@Table(name = "shopping_cart_items", indexes = {
+        @Index(name = "idx_shoppingCartItem_product", columnList = "product_id"),
+        @Index(name = "idx_shoppingCartItem_shoppingCart", columnList = "shopping_cart_id"),
+        @Index(name = "idx_shoppingCartItem_productSize", columnList = "product_size_id")
+})
 public class ShoppingCartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

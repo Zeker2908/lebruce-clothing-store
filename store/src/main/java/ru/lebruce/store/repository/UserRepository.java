@@ -6,16 +6,32 @@ import ru.lebruce.store.domain.model.User;
 
 import java.util.Optional;
 
+/**
+ * Репозиторий для управления сущностями пользователей.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    /**
+     * Удаляет пользователя по имени пользователя.
+     *
+     * @param username имя пользователя
+     */
     void deleteByUsername(String username);
 
+    /**
+     * Находит пользователя по имени пользователя.
+     *
+     * @param username имя пользователя
+     * @return Optional, содержащий найденного пользователя, если такой пользователь существует
+     */
     Optional<User> findByUsername(String username);
 
-    Optional<User> findByUserId(Long userId);
-
+    /**
+     * Проверяет, существует ли пользователь с заданным именем пользователя.
+     *
+     * @param username имя пользователя
+     * @return true, если пользователь существует, иначе false
+     */
     boolean existsByUsername(String username);
-
-    boolean existsByUserId(Long userId);
-
 }

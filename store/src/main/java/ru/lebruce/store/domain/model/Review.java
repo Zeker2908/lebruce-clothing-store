@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "reviews")
+@Table(name = "reviews", indexes = {
+        @Index(name = "idx_review_rating", columnList = "rating")
+})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

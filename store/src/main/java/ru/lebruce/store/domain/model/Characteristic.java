@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "characteristics")
+@Table(name = "characteristics", indexes = {
+        @Index(name = "idx_characteristic_name", columnList = "characteristicName")
+})
 public class Characteristic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
