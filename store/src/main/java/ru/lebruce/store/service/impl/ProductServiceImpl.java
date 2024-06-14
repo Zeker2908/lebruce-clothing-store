@@ -13,7 +13,6 @@ import ru.lebruce.store.domain.dto.ProductRequest;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.exception.BrandNotFoundException;
 import ru.lebruce.store.exception.CategoryNotFoundException;
-import ru.lebruce.store.exception.ProductAlreadyExistsException;
 import ru.lebruce.store.exception.ProductNotFoundException;
 import ru.lebruce.store.repository.BrandRepository;
 import ru.lebruce.store.repository.CategoryRepository;
@@ -42,7 +41,6 @@ public class ProductServiceImpl implements ProductService {
     private final BrandRepository brandRepository;
 
     private static final String PRODUCT_NOT_FOUND = "Товар с названием %s не найден";
-    private static final String PRODUCT_ALREADY_EXISTS_MESSAGE = "Такой товар уже существует";
 
     @Override
     public Page<Product> findAllProducts(int page, int size, String[] sort) {
@@ -93,12 +91,6 @@ public class ProductServiceImpl implements ProductService {
                 .description(productRequest.getDescription())
                 .imageUrls(uploadImages(images))
                 .build();
-
-        if (product.equals(repository.findByProductNameAndBrandAndCategory(productRequest.getProductName(), brandService.getById(productRequest.getBrandId()),
-                categoryRepository.findByCategoryId(productRequest.getCategoryId()).orElseThrow(() ->
-                        new CategoryNotFoundException("Данной категории не существует"))))) {
-            throw new ProductAlreadyExistsException(PRODUCT_ALREADY_EXISTS_MESSAGE);
-        }
 
         return saveProduct(product);
     }
