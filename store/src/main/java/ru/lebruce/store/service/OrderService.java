@@ -11,7 +11,7 @@ public interface OrderService {
     List<Order> getOrders();
 
     @Transactional
-    Order createOrder();
+    void createOrder();
 
     @Transactional
     Order updateOrderStatus(Long orderId, OrderStatus newStatus);

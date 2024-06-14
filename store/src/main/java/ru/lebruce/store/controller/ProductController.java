@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lebruce.store.domain.dto.CharacteristicRequest;
@@ -115,6 +116,7 @@ public class ProductController {
      * @param images         Изображения товара
      * @return Созданный товар
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid ProductRequest productRequest, @RequestPart MultipartFile[] images) {
         return ResponseEntity.ok(service.createProduct(productRequest, images));
@@ -137,6 +139,7 @@ public class ProductController {
      * @param productId ID товара
      * @return ответ, что товар успешно удален
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         service.deleteProduct(productId);
@@ -149,6 +152,7 @@ public class ProductController {
      * @param productName Название товара
      * @return ответ, что товар успешно удален
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/name/{productName}")
     public ResponseEntity<?> deleteProductByName(@PathVariable String productName) {
         service.deleteProduct(productName);
@@ -163,6 +167,7 @@ public class ProductController {
      * @param characteristic Данные о характеристике
      * @return Characteristic
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/characteristic")
     public Characteristic create(@RequestBody @Valid CharacteristicRequest characteristic) {
         return characteristicService.create(characteristic);
@@ -174,6 +179,7 @@ public class ProductController {
      * @param characteristic Данные о характеристике
      * @return Characteristic
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/characteristic")
     public Characteristic updateCharacteristic(@RequestBody Characteristic characteristic) {
         return characteristicService.update(characteristic);
@@ -184,6 +190,7 @@ public class ProductController {
      *
      * @param characteristicId ID характеристики
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/characteristic/{characteristicId}")
     public void deleteCharacteristic(@PathVariable Long characteristicId) {
         characteristicService.deleteCharacteristic(characteristicId);
@@ -197,6 +204,7 @@ public class ProductController {
      * @param productSizeRequest Данные о размере
      * @return ResponseEntity<?>
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/size")
     public ResponseEntity<?> createProductSize(@RequestBody @Valid ProductSizeRequest productSizeRequest) {
         productSizeService.createProductSize(productSizeRequest);
@@ -209,6 +217,7 @@ public class ProductController {
      * @param productSize Данные о размере
      * @return ResponseEntity<?>
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/size")
     public ResponseEntity<?> updateProductSize(@RequestBody ProductSize productSize) {
         productSizeService.updateProductSize(productSize);
@@ -221,6 +230,7 @@ public class ProductController {
      * @param id ID размера
      * @return ResponseEntity<?>
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/size/{id}")
     public ResponseEntity<?> deleteProductSize(@PathVariable Long id) {
         productSizeService.deleteProductSize(id);

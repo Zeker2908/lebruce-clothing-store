@@ -27,6 +27,7 @@ public class UserController {
     private final PasswordResetTokenService passwordResetTokenService;
     private final PasswordResetService passwordResetService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @Schema(description = "Получить список всех пользователей")
     public ResponseEntity<?> findAllUser() {
@@ -52,6 +53,7 @@ public class UserController {
         return ResponseEntity.ok(service.updateUser(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{username}")
     @Schema(description = "Удалить пользователя по имени пользователя")
     public ResponseEntity<?> deleteUsername(@PathVariable String username) {
@@ -115,7 +117,7 @@ public class UserController {
         return ResponseEntity.ok("На вашу почту отправлено письмо с дальнейшими указаниями");
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/{username}")
     @Schema(description = "Получить администратора по имени пользователя")
     public void getAdmin(@PathVariable String username) {

@@ -1,6 +1,7 @@
 package ru.lebruce.store.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.Order;
 import ru.lebruce.store.domain.model.OrderStatus;
@@ -20,13 +21,15 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder() {
-        return orderService.createOrder();
+    public ResponseEntity<?> createOrder() {
+        orderService.createOrder();
+        return ResponseEntity.ok("Ваш заказ успешно создан");
     }
 
-    @PutMapping
-    public Order updateOrder(@RequestBody Long orderId, OrderStatus newStatus) {
-        return orderService.updateOrderStatus(orderId, newStatus);
+    @PutMapping("/{orderId}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatus status) {
+        orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok("Ваш заказ успешно изменил статус на " + status.name());
     }
 
 }

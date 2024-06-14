@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resources/mail.properties
+src/main/resources/secret.properties
 application.log
 deploy.sh
 

@@ -3,6 +3,7 @@ package ru.lebruce.store.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.Brand;
 import ru.lebruce.store.service.BrandService;
@@ -29,16 +30,19 @@ public class BrandController {
         return ResponseEntity.ok(productPage);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Brand brand) {
         return ResponseEntity.ok(brandService.saveBrand(brand));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Brand brand) {
         return ResponseEntity.ok(brandService.updateBrand(brand));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         brandService.deleteById(id);

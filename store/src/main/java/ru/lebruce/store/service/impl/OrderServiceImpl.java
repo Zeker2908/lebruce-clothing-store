@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order createOrder() {
+    public void createOrder() {
         User user = userService.getCurrentUser();
         ShoppingCart cart = shoppingCartService.getCurrentShoppingCart();
         if (cart.getItems().isEmpty()) {
@@ -65,7 +65,6 @@ public class OrderServiceImpl implements OrderService {
         }
         shoppingCartService.cleanShoppingCart();
 
-        return order;
     }
 
     @Override

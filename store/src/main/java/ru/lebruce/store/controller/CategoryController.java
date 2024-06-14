@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.Category;
 import ru.lebruce.store.service.CategoryService;
@@ -33,21 +34,25 @@ public class CategoryController {
         return service.searchCategory(query, pageable);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public Category createCategory(@RequestBody Category category) {
         return service.saveCategory(category);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public Category updateCategory(@RequestBody Category category) {
         return service.updateCategory(category);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{categoryId}")
     public void deleteCategory(@PathVariable Long categoryId) {
         service.deleteCategory(categoryId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("name/{categoryName}")
     public void deleteCategory(@PathVariable String categoryName) {
         service.deleteCategory(categoryName);
