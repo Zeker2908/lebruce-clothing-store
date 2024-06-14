@@ -136,6 +136,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public boolean checkAdmin() {
+        User user = getCurrentUser();
+        return user.getRole().name().equals("ROLE_ADMIN");
+    }
+
+
     /**
      * Выдача прав администратора текущему пользователю
      * <p>

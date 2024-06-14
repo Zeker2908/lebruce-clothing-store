@@ -71,6 +71,8 @@ public interface UserService {
      */
     User getCurrentUser();
 
+    boolean checkAdmin();
+
     /**
      * Получает администратора по имени пользователя.
      *

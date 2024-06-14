@@ -118,6 +118,12 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin")
+    public ResponseEntity<?> checkAdmin() {
+        return ResponseEntity.ok(service.checkAdmin());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/{username}")
     @Schema(description = "Получить администратора по имени пользователя")
     public void getAdmin(@PathVariable String username) {
