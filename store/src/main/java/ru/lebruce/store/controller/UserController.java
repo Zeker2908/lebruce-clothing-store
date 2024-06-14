@@ -22,7 +22,6 @@ import ru.lebruce.store.service.*;
 @Schema(description = "Контроллер для управления пользователями")
 public class UserController {
     private final UserService service;
-    private final SetUsernameTokenService setUsernameTokenService;
     private final SetUsernameService setUsernameService;
     private final PasswordResetTokenService passwordResetTokenService;
     private final PasswordResetService passwordResetService;

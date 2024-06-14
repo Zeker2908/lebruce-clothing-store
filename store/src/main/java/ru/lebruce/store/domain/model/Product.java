@@ -88,6 +88,7 @@ public class Product {
     private List<Characteristic> characteristics;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     @Schema(description = "Размеры продукта")
     private List<ProductSize> sizes;
 

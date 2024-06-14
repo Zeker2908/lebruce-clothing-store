@@ -3,7 +3,6 @@ package ru.lebruce.store.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.dto.ShoppingCartItemRequest;
 import ru.lebruce.store.domain.model.ShoppingCart;
@@ -22,7 +21,6 @@ public class ShoppingCartController {
         return ResponseEntity.ok(shoppingCartService.getCurrentShoppingCart());
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/quantity")
     public ResponseEntity<Integer> getQuantity() {
         return ResponseEntity.ok(shoppingCartService.getQuantityPosition());

@@ -69,10 +69,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order updateOrderStatus(Long orderId, OrderStatus newStatus) {
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Заказ не найден по айди " + orderId));
         order.setStatus(newStatus);
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 }

@@ -14,5 +14,5 @@ public interface OrderService {
     void createOrder();
 
     @Transactional
-    Order updateOrderStatus(Long orderId, OrderStatus newStatus);
+    void updateOrderStatus(Long orderId, OrderStatus newStatus);
 }
