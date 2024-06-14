@@ -51,14 +51,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByProductNameContainingIgnoreCaseOrBrand_NameContainingIgnoreCase(String productName, String brandName, Pageable pageable);
 
     /**
-     * Проверяет, существует ли продукт с заданным названием, брендом и категорией.
+     * Находит продукт с заданным названием, брендом и категорией.
      *
      * @param productName название продукта
      * @param brand       бренд продукта
      * @param category    категория продукта
      * @return true, если продукт существует, иначе false
      */
-    boolean existsByProductNameAndBrandAndCategory(String productName, Brand brand, Category category);
+    Product findByProductNameAndBrandAndCategory(String productName, Brand brand, Category category);
 
     /**
      * Проверяет, существует ли продукт с заданным идентификатором.
