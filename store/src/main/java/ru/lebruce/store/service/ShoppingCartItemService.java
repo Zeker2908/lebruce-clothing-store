@@ -11,5 +11,5 @@ public interface ShoppingCartItemService {
     @Transactional
     void delete(Long shoppingCartItemId);
 
-    ShoppingCartItem updateQuantity(Long shoppingCartItemId, int quantityChange);
+    void updateQuantity(Long shoppingCartItemId, int quantityChange);
 }

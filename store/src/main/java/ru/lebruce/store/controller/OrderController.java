@@ -1,47 +1,33 @@
 package ru.lebruce.store.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.lebruce.store.domain.model.Order;
-import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.domain.model.OrderStatus;
 import ru.lebruce.store.service.OrderService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderController {
-    private final OrderService service;
+    private final OrderService orderService;
 
     @GetMapping
-    public List<Order> findAllOrders() {
-        return service.findAllOrders();
-    }
-
-    @GetMapping("/{user}")
-    public Order findByUser(@PathVariable User user) {
-        return service.findByUser(user);
+    public List<Order> getOrders() {
+        return orderService.getOrders();
     }
 
     @PostMapping
-    public Order saveOrder(@RequestBody Order order) {
-        return service.saveOrder(order);
+    public Order createOrder() {
+        return orderService.createOrder();
     }
 
     @PutMapping
-    public Order updateOrder(@RequestBody Order order) {
-        return service.updateOrder(order);
+    public Order updateOrder(@RequestBody Long orderId, OrderStatus newStatus) {
+        return orderService.updateOrderStatus(orderId, newStatus);
     }
 
-    @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId) {
-        service.deleteOrder(orderId);
-    }
-
-    @DeleteMapping("user/{user}")
-    public void deleteOrder(@PathVariable User user) {
-        service.deleteOrder(user);
-    }
 }
 

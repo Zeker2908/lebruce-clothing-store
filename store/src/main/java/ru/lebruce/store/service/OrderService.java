@@ -1,20 +1,18 @@
 package ru.lebruce.store.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.Order;
-import ru.lebruce.store.domain.model.User;
+import ru.lebruce.store.domain.model.OrderStatus;
 
 import java.util.List;
 
 public interface OrderService {
-    List<Order> findAllOrders();
 
-    Order saveOrder(Order order);
+    List<Order> getOrders();
 
-    Order findByUser(User user);
+    @Transactional
+    Order createOrder();
 
-    Order updateOrder(Order order);
-
-    void deleteOrder(Long orderId);
-
-    void deleteOrder(User user);
+    @Transactional
+    Order updateOrderStatus(Long orderId, OrderStatus newStatus);
 }

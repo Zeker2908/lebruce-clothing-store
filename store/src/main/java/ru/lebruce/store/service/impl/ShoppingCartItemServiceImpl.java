@@ -61,7 +61,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     @Transactional
-    public ShoppingCartItem updateQuantity(Long shoppingCartItemId, int quantityChange) {
+    public void updateQuantity(Long shoppingCartItemId, int quantityChange) {
         var item = repository.findById(shoppingCartItemId)
                 .orElseThrow(() -> new ShoppingCartItemNotFoundException("Объект не найден"));
 
@@ -73,7 +73,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
         if (newQuantity == 0) {
             repository.deleteById(shoppingCartItemId);
-            return null;
+            return;
         }
 
         if (newQuantity > item.getSize().getQuantity()) {
@@ -81,7 +81,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
         }
 
         item.setQuantity(newQuantity);
-        return repository.save(item);
+        repository.save(item);
     }
 
 

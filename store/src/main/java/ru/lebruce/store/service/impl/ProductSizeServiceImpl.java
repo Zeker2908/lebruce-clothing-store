@@ -44,6 +44,13 @@ public class ProductSizeServiceImpl implements ProductSizeService {
         repository.save(productSize);
     }
 
+    @Override
+    public void updateQuantity(Long ProductSizeId, int quantityChange) {
+        ProductSize productSize = getProductSizeById(ProductSizeId);
+        productSize.setQuantity(productSize.getQuantity() + quantityChange);
+        updateProductSize(productSize);
+    }
+
 
     @Transactional
     @Override

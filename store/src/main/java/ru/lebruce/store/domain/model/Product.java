@@ -71,7 +71,7 @@ public class Product {
 
     @Formula("(SELECT COALESCE(AVG(r.rating), 0) FROM reviews r WHERE r.product_id = product_id)")
     @Schema(description = "Рейтинг продукта", example = "4.5")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER, pattern = "#.##")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER_FLOAT, pattern = "#.##")
     private Double rating;
 
     @Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")

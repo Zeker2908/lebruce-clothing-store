@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.lebruce.store.domain.model.ShoppingCart;
 import ru.lebruce.store.domain.model.User;
 
+import java.util.Optional;
+
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
-    ShoppingCart findByUser(User user);
+    Optional<ShoppingCart> findByUser(User user);
 }

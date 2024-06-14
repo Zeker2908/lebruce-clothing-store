@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lebruce.store.domain.model.ShoppingCart;
+import ru.lebruce.store.exception.ShoppingCartNotFoundException;
 import ru.lebruce.store.repository.ShoppingCartRepository;
 import ru.lebruce.store.service.ShoppingCartService;
 import ru.lebruce.store.service.UserService;
@@ -16,7 +17,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getCurrentShoppingCart() {
-        return repository.findByUser(userService.getCurrentUser());
+        return repository.findByUser(userService.getCurrentUser()).orElseThrow(() ->
+                new ShoppingCartNotFoundException("Корзина не найдена"));
     }
 
     @Override
@@ -26,7 +28,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart create(ShoppingCart shoppingCart) {
+    public void cleanShoppingCart() {
+        ShoppingCart shoppingCart = getCurrentShoppingCart();
+        shoppingCart.getItems().clear();
+        save(shoppingCart);
+    }
+
+    @Override
+    public ShoppingCart save(ShoppingCart shoppingCart) {
         return repository.save(shoppingCart);
     }
 

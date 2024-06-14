@@ -10,5 +10,8 @@ public interface ProductSizeService {
 
     void updateProductSize(ProductSize productSize);
 
+    void updateQuantity(Long ProductSizeId, int quantityChange);
+
     void deleteProductSize(Long id);
+
 }

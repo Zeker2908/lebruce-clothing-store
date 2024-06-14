@@ -7,7 +7,9 @@ public interface ShoppingCartService {
 
     Integer getQuantityPosition();
 
-    ShoppingCart create(ShoppingCart shoppingCart);
+    void cleanShoppingCart();
+
+    ShoppingCart save(ShoppingCart shoppingCart);
 
     ShoppingCart update(ShoppingCart shoppingCart);
 

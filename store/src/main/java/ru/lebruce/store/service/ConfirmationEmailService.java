@@ -38,7 +38,7 @@ public class ConfirmationEmailService {
         var cart = ShoppingCart.builder()
                 .user(user)
                 .build();
-        shoppingCartService.create(cart);
+        shoppingCartService.save(cart);
 
         confirmationTokenService.delete(token);
     }
