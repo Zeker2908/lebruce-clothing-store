@@ -74,10 +74,10 @@ public interface ProductService {
     /**
      * Обновляет существующий продукт.
      *
-     * @param product продукт для обновления
+     * @param productRequest продукт для обновления
      * @return обновленный продукт
      */
-    Product updateProduct(Product product);
+    Product updateProduct(Long productId, ProductRequest productRequest, MultipartFile[] images);
 
     /**
      * Создает новый продукт и загружает изображения.

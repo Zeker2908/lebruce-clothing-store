@@ -119,12 +119,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        if (!repository.existsById(product.getProductId())) {
-            throw new ProductNotFoundException(String.format(PRODUCT_NOT_FOUND, product.getProductId()));
+    public Product updateProduct(Long productId, ProductRequest productRequest, MultipartFile[] images) {
+        var existingProduct = repository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Продукт с данным ID не найден"));
+
+        existingProduct.setProductName(productRequest.getProductName());
+        existingProduct.setBrand(brandService.getById(productRequest.getBrandId()));
+        existingProduct.setCategory(categoryRepository.findByCategoryId(productRequest.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException("Данной категории не существует")));
+        existingProduct.setPrice(productRequest.getPrice());
+        existingProduct.setDescription(productRequest.getDescription());
+
+        if (images != null && images.length > 0) {
+            existingProduct.setImageUrls(uploadImages(images));
         }
-        return repository.save(product);
+
+        return saveProduct(existingProduct);
     }
+
 
     @Override
     @Transactional

@@ -125,12 +125,13 @@ public class ProductController {
     /**
      * Обновляет товар
      *
-     * @param product Данные о товаре
+     * @param productId Данные о товаре
      * @return Обновленный товар
      */
-    @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody @Valid Product product) {
-        return ResponseEntity.ok(service.updateProduct(product));
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long productId, @Valid ProductRequest productRequest, @RequestPart MultipartFile[] images) {
+        return ResponseEntity.ok(service.updateProduct(productId, productRequest, images));
     }
 
     /**
