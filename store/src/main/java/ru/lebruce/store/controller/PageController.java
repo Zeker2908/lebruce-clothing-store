@@ -11,7 +11,7 @@ import ru.lebruce.store.domain.model.SetUsernameToken;
 import ru.lebruce.store.service.ConfirmationEmailService;
 import ru.lebruce.store.service.PasswordResetTokenService;
 import ru.lebruce.store.service.SetUsernameTokenService;
-
+    
 @Controller
 @RequestMapping
 @RequiredArgsConstructor

@@ -15,7 +15,6 @@ import ru.lebruce.store.domain.model.User;
 import ru.lebruce.store.exception.UserAlreadyExistsException;
 import ru.lebruce.store.exception.UserNotFoundException;
 import ru.lebruce.store.repository.UserRepository;
-import ru.lebruce.store.service.JwtService;
 import ru.lebruce.store.service.UserService;
 
 import java.util.List;
@@ -32,7 +31,6 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository repository;
-    private final JwtService jwtService;
 
 
     @Override

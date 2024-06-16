@@ -16,7 +16,10 @@ import ru.lebruce.store.domain.model.Characteristic;
 import ru.lebruce.store.domain.model.Product;
 import ru.lebruce.store.domain.model.ProductSize;
 import ru.lebruce.store.domain.model.Review;
-import ru.lebruce.store.service.*;
+import ru.lebruce.store.service.CharacteristicService;
+import ru.lebruce.store.service.ProductService;
+import ru.lebruce.store.service.ProductSizeService;
+import ru.lebruce.store.service.ReviewService;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -26,7 +29,6 @@ public class ProductController {
     private final CharacteristicService characteristicService;
     private final ProductSizeService productSizeService;
     private final ReviewService reviewService;
-    private final BrandService brandService;
 
     /**
      * Возвращает все товары
