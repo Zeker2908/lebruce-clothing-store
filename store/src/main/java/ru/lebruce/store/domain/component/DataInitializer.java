@@ -26,7 +26,7 @@ public class DataInitializer implements CommandLineRunner {
     private String password;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (!userService.existsByUsername(adminEmail)) {
             User user = User.builder()
                     .username(adminEmail)
